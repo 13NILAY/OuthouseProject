@@ -6,13 +6,19 @@ import admin from '../../../assets/Admin.png'
 import ScrollToTop from '../../../ScrollToTop'
 import { Link } from 'react-router-dom'
 import SignInPage from '../../SignIn/SignInPage'
+import logout1 from '../../../assets/logout.png'
+import useLogout from '../../../hooks/useLogout'
 
 
 
 
 const Account = () => {
+  const logout=useLogout();
   const [loggedin, setLoggedin] = useState(true)
   const [adminLogin, setAdminLogin]=useState(true)
+  const handleClick=async()=>{
+    await logout();
+  }
   return (
     <>
         <ScrollToTop/>
@@ -49,7 +55,7 @@ const Account = () => {
                     <Link to='/account/address' className='  px-4 py-6 border border-typography  flex justify-between items-center font-texts font-semibold rounded-md cursor-pointer hover:bg-gray-400/10 max-sm:w-3/4 max-[470px]:w-full'>
                       <img src={address} className='h-28 max-mobileM:h-24 p-2 '/>
                       <div className='h-full flex flex-col justify-center items-start py-6 '>
-                        <p className='text-xl font-bold'>Addresses</p>
+                        <p className='text-xl font-bold'>Address</p>
                         <p className='text-sm '>View and Edit addresses for orders and gifts</p>
                       </div>
                     </Link>
@@ -65,6 +71,13 @@ const Account = () => {
                         </Link>
                       )
                     }
+                    <button onClick={handleClick} className='  px-4 py-6 border border-typography  flex justify-between items-center font-texts font-semibold rounded-md cursor-pointer hover:bg-gray-400/10 max-sm:w-3/4 max-[470px]:w-full'>
+                      <img src={logout1} className='h-28 max-mobileM:h-24 p-2 '/>
+                      <div className='h-full flex flex-col justify-center items-start py-6 '>
+                        <p className='text-xl font-bold'>Log Out</p>
+                        <p className='text-sm '>Sign Out from your account</p>
+                      </div>
+                    </button>
                   </div>
                 </div>
             </div>

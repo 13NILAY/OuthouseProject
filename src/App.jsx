@@ -21,7 +21,7 @@ import Header from './Components/Header/Header.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 
 import { Provider } from 'react-redux'
-import {store} from './app/store.js'
+import {store} from './app/store.jsx'
 
 const Roles={
   'User':2001,
@@ -40,9 +40,9 @@ const App =()=>{
             <Route path='about' element={<About/>}/>
             
             
-            {/* We want to protect these routes */}
-            {/* <Route element={<PersistLogin/>}> */}
-                {/* <Route element={<RequireAuth allowedRoles={[Roles.User]}/>}> */}
+            We want to protect these routes
+            <Route element={<PersistLogin/>}>
+                <Route element={<RequireAuth allowedRoles={[Roles.User]}/>}>
                     <Route path='shop' element={<Shop/>}/>
                     <Route path='account' element={<Account/>}/>
                     <Route path='account/my-orders' element={<Orders/>}/>
@@ -50,13 +50,13 @@ const App =()=>{
                     <Route path='/account/address' element={<Address/>}/>
                     <Route path='cart' element={<Cart/>}/>
                     <Route path='shop/:_id' element={<SingleProductDetail/>}/>
-                {/* </Route> */}
+                </Route>
 
-                {/* <Route element={<RequireAuth allowedRoles={[Roles.Admin]}/>}> */}
+                <Route element={<RequireAuth allowedRoles={[Roles.Admin]}/>}>
                     <Route path='account/admin' element={<Admin/>}/>
                     <Route path='account/admin/addProducts' element={<AddProducts/>}/>
-                {/* </Route> */}
-            {/* </Route> */}
+                </Route>
+            </Route>
 
           </Route>
         </Routes>

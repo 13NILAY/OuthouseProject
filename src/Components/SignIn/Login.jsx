@@ -39,7 +39,7 @@ const Login = () => {
             setUser('');
             setPwd('');
             // navigate(from, {replace :true})
-            navigate("/home");
+            navigate(from, {replace :true});
 
         }catch(err){
             if(!err?.response){

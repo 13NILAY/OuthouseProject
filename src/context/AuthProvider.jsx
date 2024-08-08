@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
             roles
         });
     };
-    console.log(localStorage.getItem("persist")=="undefined");
     const [persist ,setPersist] =useState(
           localStorage.getItem("persist")=="undefined" ?true :JSON.parse(localStorage.getItem("persist")));
 
