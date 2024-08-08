@@ -21,7 +21,7 @@ import Header from './Components/Header/Header.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 
 import { Provider } from 'react-redux'
-import {store} from './app/store.jsx'
+import {store} from './app/store.js'
 
 const Roles={
   'User':2001,
