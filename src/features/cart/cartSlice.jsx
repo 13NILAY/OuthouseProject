@@ -66,7 +66,7 @@ export const addProductToCart = ({product, quantity,selectedSize}) => async (dis
     try{
       console.log(_id);
       console.log(size);
-      const response =await fetch('http://localhost:8080/users/removeCart',{
+      const response =await fetch('https://outhouseproject.onrender.com/users/removeCart',{
         method:'DELETE',
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,

@@ -41,7 +41,7 @@ const AddProducts = () => {
     formData1.append("photo",image);
 
     try{
-      const upload =await fetch("http://localhost:8080/admin/addProductImages",{
+      const upload =await fetch("https://outhouseproject.onrender.com/admin/addProductImages",{
         method:"POST",
         body:formData1
       });
