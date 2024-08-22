@@ -21,5 +21,5 @@ router.get("/viewMyCart/:email",usersController.getUserCart);
 router.post("/addCart/:pID",usersController.addCart);
 
 //delete from cart
-router.delete("/removeCart",usersController.removeCart);
+router.delete("/removeCart/:_id",usersController.removeFromCart);
 module.exports =router ;          

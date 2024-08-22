@@ -10,7 +10,7 @@ const productSchema = new Schema(
     description: {
       type: String,
     },
-    category: {
+    categoryName: {
       type: String,
       required: true,
     },
@@ -26,13 +26,16 @@ const productSchema = new Schema(
         type: Number,
       },
     },
-    picture: {
-      //secure_url of images
-      type: String,
+    frontPicture: {
+      type:String
     },
-      // text: {
-      //   type: String,
-      // },
+    picture: [
+      //secure_url of images
+      {
+        type: String,
+      }
+    ],
+     
     color: [
         {
           type: String,
@@ -44,4 +47,10 @@ const productSchema = new Schema(
 );
 
 const Product = mongoose.model("Product", productSchema);
+
+Product.syncIndexes().then(() => {
+  console.log('Indexes are synchronized');
+}).catch(err => {
+  console.error('Error synchronizing indexes', err);
+});
 module.exports = Product;

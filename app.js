@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express=require('express');
 const app=express();
+const bodyParser = require('body-parser');
 const mongoose=require('mongoose')
 const cookieParser = require("cookie-parser");
 const cors=require('cors');
@@ -8,8 +9,8 @@ const corsOptions=require('./config/corsOptions');
 const credentials=require('./middleware/credentials');
 const verifyJWT=require('./middleware/verifyJWT');
 const verifyRoles=require("./middleware/verifyRoles");
-const PORT=process.env.PORT
-const URL=process.env.URL
+const PORT=process.env.PORT;
+const URL=process.env.URL;
 const ROLES_LIST=require("./config/roles_list");
 // Connect to MongoDB
 const dbconnect= async()=>{
@@ -23,16 +24,16 @@ const dbconnect= async()=>{
 
 //Handle options credentials check -before CORS!
 // and fetch cookies credentials requirement
-// app.use(credentials);
+app.use(credentials);
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
-
 // built-in middleware to handle urlencoded form data
-app.use(express.urlencoded({ extended: false }));
 
 // built-in middleware for json
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: false }));
 
 //middleware for cookies
 app.use(cookieParser());
@@ -43,12 +44,14 @@ app.use("/login",require('./routes/auth'));
 app.use("/refresh" ,require('./routes/refresh'));
 app.use("/logout" ,require("./routes/logout"));
 
-// app.use(verifyJWT);
+app.use(verifyJWT);
 app.use('/users',require('./routes/user'));
 
 app.use("/product",require("./routes/products"));
+app.use("/order",require("./routes/order") );
 
-// app.use(verifyRoles(ROLES_LIST.Admin));
+app.use(verifyRoles(ROLES_LIST.Admin));
+app.use("/category",require("./routes/category"));
 app.use("/admin", require("./routes/admin"));
 
 app.listen(PORT,()=>{

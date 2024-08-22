@@ -92,10 +92,11 @@ const addCart = async (req, res) => {
 // module.exports = { addToCart };
 
 //remove From Cart
-const removeCart = async (req, res) => {
-  console.log(req.body);
+const removeFromCart = async (req, res) => {
   try {
-    const { productId, size } = req.body;
+    console.log("nilay");
+  console.log(req.body);
+    const { productId, size ,userId } = req.body;
 
     // Validate input
     if (!productId || !size) {
@@ -104,7 +105,7 @@ const removeCart = async (req, res) => {
 
     // Fetch the user from the database (assuming req.user.id is available via authentication middleware)
     const user = await User.findById(req.body.userId);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -120,12 +121,13 @@ const removeCart = async (req, res) => {
     user.cart.splice(cartItemIndex, 1);
 
     // Save the updated user document
-    await user.save();
+    const savedUser =await user.save();
+    console.log(savedUser);
 
     res.status(200).json({ message: 'Product removed from cart successfully', cart: user.cart });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.log(error);
+    res.status(500).json({ message: error });
   }
 };
 
@@ -151,5 +153,5 @@ const getUserCart = async (req, res) => {
 };
 
 module.exports={
-    getAllUser,delUser,updateUser,getUser,getUserCart,removeCart,addCart
+    getAllUser,delUser,updateUser,getUser,getUserCart,removeFromCart,addCart
 }

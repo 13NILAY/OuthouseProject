@@ -1,49 +1,66 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-const orderSchema = new Schema(
-  {
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: "user",
+const orderSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
-    product: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "product"
-      }
-    ],
-    size:{
-        type:String
-    },
-    color: [
+    items: [
         {
-          type: String,
-        },
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'product',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                min: 1
+            },
+            price: {
+                type: Number,
+                required: true
+            }
+        }
     ],
-    Quantity:{
-        type:Number,
-        default:1
+    totalAmount: {
+        type: Number,
+        required: true
+    },
+    currency: {
+        type: String,
+        default: 'INR',
+        required: true
     },
     paymentStatus: {
-      type: String,
-      enum: ["pending", "completed", "cancelled", "refund"],
-    //   required: true,
+        type: String,
+        enum: ['Pending', 'Paid', 'Failed'],
+        default: 'Pending'
     },
-
-    paymentType: {
-      type: String,
-      enum: ["cod", "card", "net banking", "UPI"],
-    //   required: true,
+    razorpayOrderId: {
+        type: String,
+        required: true
+    },
+    razorpayPaymentId: {
+        type: String
+    },
+    razorpaySignature: {
+        type: String
     },
     orderStatus: {
-      type: String,
-      enum: ["received", "shipping", "shipped", "dispatched", "delivered"],
-      default: "received",
+        type: String,
+        enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+        default: 'Pending'
     },
-  },
-  { timestamps: true }
-);
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
+});
 
-const OrderSchema = mongoose.model("order", orderSchema);
-module.exports = OrderSchema;
+module.exports = mongoose.model('Order', orderSchema);

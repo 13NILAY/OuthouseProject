@@ -1,7 +1,6 @@
 const allowedOrigins =[
-    "https://outhouse-project.vercel.app",
-    'http://localhost:8080',
     "http://localhost:5173",
+    "https://outhouse-project.vercel.app",
     "http://localhost:5174",
     "http://localhost:5175",
     "http://127.0.0.1",

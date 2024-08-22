@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const allProducts =async (req,res)=>{
     try{
+        console.log("sonu")
         const list= await ProductSchema.find();
             res.status(200).json({
                 success:true,
