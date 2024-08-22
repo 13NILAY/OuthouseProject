@@ -7,7 +7,7 @@ const SingleProduct = ({products}) => {
     <>
         <Link to={`/shop/${products._id}`} className='flex flex-col items-start justify-start rounded-lg border border-typography p-3 my-5 text-typography shadow-sm shadow-gray-600'>
             <div className='bg-gray-200 rounded-lg'>
-                <img src={products.picture} className='h-full'/>
+                <img src={products.frontPicture} className='h-full'/>
             </div>
             <div className='mx-1 mt-4'>
                   <p className='font-semibold text-xl font-texts'>{products.name}</p>

@@ -1,28 +1,50 @@
-import React, { useState,useEffect ,useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../../../api/axios";
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AddProducts = () => {
-  const navigate=useNavigate();
-  const [image, setImage]=useState(null);
+  const navigate = useNavigate();
+  const [images, setImages] = useState([]); // State to hold multiple images
+  const [image,setImage] =useState(null);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    category: "",
+    categoryName: "",
     sizes: [""],
     currency: "INR",
     value: "",
+    frontPicture:"",
     picture: "",
     colors: [""],
   });
+
+  useEffect(() => {
+    // Fetch categories from the backend
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("/category");
+        console.log(response.data);
+        setCategories(response.data.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
- 
+  const handleSingleFileChange=(e)=>{
+    // const selectedFile = e.target.files[0];
+    
+      setImage(e.target.files[0]);
+    
+  }
   const handleFileChange = (e) => {
-    setImage( e.target.files[0] );
+    setImages([...e.target.files]);
   };
 
   const handleArrayChange = (e, index, field) => {
@@ -35,55 +57,90 @@ const AddProducts = () => {
     setFormData({ ...formData, [field]: [...formData[field], ""] });
   };
 
-  const handleSubmit=async (event)=>{
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData1 =new FormData();
-    formData1.append("photo",image);
-
-    try{
-      const upload =await fetch("https://outhouseproject.onrender.com/admin/addProductImages",{
-        method:"POST",
-        body:formData1
-      });
-      const result= await upload.json();
-      console.log(result);
-      setFormData({...formData,'picture':result.fileUrl});
-      try{
-        const add=await axios.post("/admin/addProduct",
-          JSON.stringify({formData,picture:result.fileUrl}),
-          {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: true
-          }
-        );
-        if(add.status==201){
-          navigate("/shop")
-        }
-      }catch(err){
-        console.log(err);
-      }
-
-    }catch(error){
-      console.log(error);
-    }
-
+    console.log('Selected image:', image);
+  
+    const formData2 = new FormData();
+    formData2.append("photo", image);
     
+    // Log the FormData content
+
+    try {
+      // Upload the front image
       
-    
+      console.log(formData2);
+      const uploadFront = await fetch("https://outhouseproject.onrender.com/admin/addSingleImage", {
+        method: "POST",
+        body: formData2,
+      });
 
-  }
+      const result1 = await uploadFront.json();
+      const frontImageUrl = result1.fileUrl;
+
+      // Upload the other images
+      const formData1 = new FormData();
+      images.forEach((image) => {
+        formData1.append("photos", image);
+      });
+
+      const upload = await fetch("https://outhouseproject.onrender.com/admin/addProductImages", {
+        method: "POST",
+        body: formData1,
+      });
+
+      const result2 = await upload.json();
+      const imageUrls = result2.fileUrls;
+
+      // Prepare the final data to send
+      const finalFormData = {
+        ...formData,
+        frontPicture: frontImageUrl,
+        picture: imageUrls,
+      };
+
+      // Submit the final product data
+      const add = await axios.post(
+        "/admin/addProduct",
+        JSON.stringify(finalFormData),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+
+      if (add.status === 201) {
+        navigate("/shop");
+      }
+    } catch (error) {
+      console.error("Error submitting product:", error);
+    }
+  };
 
   return (
     <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding pt-10 font-texts ">
-      <h1 className="text-4xl font-bold mb-6 text-center ">
+      <h1 className="text-4xl font-bold mb-6 text-center">
         Add a New Product
       </h1>
       <div className="w-full max-w-2xl mx-auto bg-slate-50 p-8 rounded-lg shadow-lg">
-        {/* Product Image */}
         <form onSubmit={handleSubmit}>
+          {/* Product Image */}
+          <div className="mb-6">
+            <label className="block text-lg font-semibold mb-2" htmlFor="FrontPicture">
+              Product Image(Front):
+            </label>
+            <input
+              id="FrontPicture"
+              className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              type="file"
+              accept="image/*"
+              // multiple
+              onChange={handleSingleFileChange}
+            />
+          </div>
           <div className="mb-6">
             <label className="block text-lg font-semibold mb-2" htmlFor="picture">
-              Product Image:
+              Product Images(Other):
             </label>
             <input
               id="picture"
@@ -110,24 +167,30 @@ const AddProducts = () => {
             />
           </div>
 
-          {/* Product Category */}
+          {/* Product Category Dropdown */}
           <div className="mb-6">
             <label className="block text-lg font-semibold mb-2" htmlFor="category">
               Product Category:
             </label>
-            <input
+            <select
               className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
-              type="text"
               id="category"
-              name="category"
-              value={formData.category}
+              name="categoryName"
+              value={formData.categoryName}
               onChange={handleChange}
-            />
+            >
+              <option value="" disabled>Select a category</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.categoryName}>
+                  {category.categoryName}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Product Sizes */}
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2 " htmlFor="sizes">
+            <label className="block text-lg font-semibold mb-2" htmlFor="sizes">
               Product Sizes:
             </label>
             {formData.sizes.map((size, index) => (
@@ -135,7 +198,6 @@ const AddProducts = () => {
                 <input
                   className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
                   type="text"
-                  id="sizes"
                   value={size}
                   onChange={(e) => handleArrayChange(e, index, "sizes")}
                 />
@@ -143,7 +205,7 @@ const AddProducts = () => {
                   <button
                     type="button"
                     onClick={() => addArrayField("sizes")}
-                    className="ml-2  bg-green-700 text-white px-2 py-1 rounded"
+                    className="ml-2 bg-green-700 text-white px-2 py-1 rounded"
                   >
                     +
                   </button>
@@ -182,10 +244,7 @@ const AddProducts = () => {
 
           {/* Product Description */}
           <div className="mb-6">
-            <label
-              className="block text-lg font-semibold mb-2"
-              htmlFor="description"
-            >
+            <label className="block text-lg font-semibold mb-2" htmlFor="description">
               Product Description:
             </label>
             <textarea
@@ -216,7 +275,7 @@ const AddProducts = () => {
                   <button
                     type="button"
                     onClick={() => addArrayField("colors")}
-                    className="ml-2  bg-green-700 text-white px-2 py-1 rounded"
+                    className="ml-2 bg-green-700 text-white px-2 py-1 rounded"
                   >
                     +
                   </button>
@@ -226,7 +285,7 @@ const AddProducts = () => {
           </div>
 
           <div className="text-center">
-            <button type="submit" className=" bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">
+            <button type="submit" className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">
               Submit
             </button>
           </div>

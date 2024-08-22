@@ -63,17 +63,22 @@ export const addProductToCart = ({product, quantity,selectedSize}) => async (dis
   };
 
   export const deleteProductFromCart =({_id,size}) => async (dispatch) =>{
+    const data=new FormData();
+    
     try{
       console.log(_id);
       console.log(size);
-      const response =await fetch('https://outhouseproject.onrender.com/users/removeCart',{
-        method:'DELETE',
+      const response = await fetch(`https://outhouseproject.onrender.com/users/removeCart/${_id}`, {
+        method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
-        withCredentials: true,
-        body:JSON.stringify({productId:_id, size:size ,userId:'669a5e947e33bff5c9ea4ee7'}),
-        
+        body: JSON.stringify({
+            productId: _id,
+            size: size,
+            userId: '669a5e947e33bff5c9ea4ee7'
+        }),
     });
-      console.log(response);
+      const result=await response.json();
+      console.log(result);
       if(response.status==200){
         dispatch(deleteFromCart(_id));
         // navigate('/shop');

@@ -44,14 +44,51 @@ const Cart = () => {
   }, [cart]);
     
   const handleDelete = ({_id, size}) => {
+    console.log(_id);
+    console.log(size);
     dispatch(deleteProductFromCart({ _id, size }));
   };
 
   const handleConfirmAddress=()=>{
     navigate('/account/address',{state: {from :location},replace: true});
   }
-  const handleChechOut=()=>{
+  const handleChechOut= async()=>{
+    // navigate("https://meet.google.com/eot-xixw-pqg");
+    try {
+      const orderData = await axios.post("/order/create-order", {
+          amount: totalCost,
+          currency: "INR",
+      });
+      console.log(orderData);
+      const options = {
+          key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your Razorpay key ID
+          amount: orderData.data.amount,
+          currency: orderData.data.currency,
+          name: "Nilay's Cloathes",
+          description: "Test Transaction",
+          order_id: orderData.data.id,
+          handler: (response) => {
+              alert("Payment successful!");
+              console.log(response);
+          },
+          prefill: {
+              name: "John Doe",
+              email: "john.doe@example.com",
+              contact: "9999999999",
+          },
+          notes: {
+              address: "Some Address",
+          },
+          theme: {
+              color: "#F37254",
+          },
+      };
 
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+  } catch (error) {
+      console.error("Payment error", error);
+  }
   }
   return (
     <>
@@ -116,14 +153,16 @@ const Cart = () => {
                         <div className='flex justify-between items-center'>
                           <p>Discount:</p>
                           <p className='text-red-600 font-semibold'>-₹300</p>
-                        </div>
+                        </div> 
                       </div>
                       <div className='flex justify-between items-center font-bold text-lg font-texts'>
                         <p>Total:</p>
                         <p>₹ {totalCost}</p>
                       </div>
                       <button onClick={handleConfirmAddress} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography'>Confirm Your Address</button>
-                      <button onClick={handleChechOut} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >Proceed to Checkout</button>
+                      <button onClick={handleChechOut} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >
+                        Proceed to Checkout
+                      </button>
                     </div>
                 </div>
               </>

@@ -15,6 +15,8 @@ import AccDetails from './Components/Pages/Account/Details/AccDetails.jsx'
 import Admin from './Components/Pages/Account/Admin/Admin.jsx'
 import AddProducts from './Components/Pages/Account/Admin/AddProducts.jsx'
 import Address from './Components/Pages/Account/Address/Address.jsx'
+import AddCategory from './Components/Pages/Account/Admin/AddCategory.jsx'
+import AddSliders from './Components/Pages/Account/Admin/AddSlider.jsx'
 import Footer from './Components/Footer/Footer.jsx'
 import Header from './Components/Header/Header.jsx'
 
@@ -42,18 +44,20 @@ const App =()=>{
             
             We want to protect these routes
             <Route element={<PersistLogin/>}>
-                <Route element={<RequireAuth allowedRoles={[Roles.User]}/>}>
+                <Route element={<RequireAuth allowedRoles={[Roles]}/>}>
                     <Route path='shop' element={<Shop/>}/>
                     <Route path='account' element={<Account/>}/>
                     <Route path='account/my-orders' element={<Orders/>}/>
                     <Route path='account/account-details' element={<AccDetails/>}/>
-                    <Route path='/account/address' element={<Address/>}/>
+                    <Route path='account/address' element={<Address/>}/>
                     <Route path='cart' element={<Cart/>}/>
                     <Route path='shop/:_id' element={<SingleProductDetail/>}/>
                 </Route>
 
                 <Route element={<RequireAuth allowedRoles={[Roles.Admin]}/>}>
                     <Route path='account/admin' element={<Admin/>}/>
+                    <Route path='account/admin/addSlider' element={<AddSliders/>}/>
+                    <Route path='account/admin/addCategory' element={<AddCategory/>}/>
                     <Route path='account/admin/addProducts' element={<AddProducts/>}/>
                 </Route>
             </Route>

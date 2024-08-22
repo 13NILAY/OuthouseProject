@@ -18,6 +18,7 @@ const SingleProductDetail = () => {
       try {
         const response = await axios.get(`product/viewProduct/${_id}`);
         setProduct(response.data.data);
+        console.log(response.data.data);
       } catch (err) {
         console.log("Error fetching Product :", err);
       }
@@ -53,7 +54,17 @@ const SingleProductDetail = () => {
           {/* IMAGES */}
           <div className='w-2/3 max-[930px]:w-3/4 max-sm:w-full flex flex-col items-start'>
             <div className='w-full bg-gray-200'>
-              <img src={product.picture} alt={product.name} />
+              <img src={product.frontPicture} alt={product.name} />
+            </div>
+            <div className='grid grid-cols-3 gap-x-5 my-3'>
+            {
+              product.picture.map((pic,index)=>(
+              <div className='w-full bg-gray-200' key={index}>
+                <img src={pic} alt="Additional view 1" />
+              </div>
+              )
+            )
+            }
             </div>
             {/* <div className='grid grid-cols-4 gap-x-4 my-3'>
               <div className='w-full bg-gray-200'>

@@ -21,7 +21,7 @@ const CartProd = ({product,quantity,selectedSize,_id,onDelete}) => {
   return (
     <>
         <div className='flex items-center relative border border-typography rounded-sm px-2 py-4 my-3 md:max-[940px]:flex-col md:max-[940px]:items-start max-[940px]:px-4 max-mobileM:flex-col max-mobileM:items-start'>
-            <img src={product.picture} className='w-2/5 max-mobileL:w-1/2 px-4'/>
+            <img src={product.frontPicture} className='w-2/5 max-mobileL:w-1/2 px-4'/>
             <div className='flex flex-col justify-center items-start max-md:justify-center max-mobileL:my-4'>
                 {/* PRODUCT INFORMATION */}
                 <p className='font-semibold text-2xl max-sm:text-lg font-texts'>{product.name}</p>
