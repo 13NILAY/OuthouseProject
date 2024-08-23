@@ -50,7 +50,7 @@ app.use('/users',require('./routes/user'));
 app.use("/product",require("./routes/products"));
 app.use("/order",require("./routes/order") );
 
-// app.use(verifyRoles(ROLES_LIST.Admin));
+app.use(verifyRoles(ROLES_LIST.Admin));
 app.use("/Category",require("./routes/category"));
 app.use("/admin", require("./routes/admin"));
 
