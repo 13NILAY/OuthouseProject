@@ -15,10 +15,10 @@ const categorySchema =new mongoose.Schema({
 
 const Category = mongoose.model("Category", categorySchema);
 
-Category.syncIndexes().then(() => {
-    console.log('Indexes are synchronized');
-}).catch(err => {
-    console.error('Error synchronizing indexes', err);
-});
+// Category.syncIndexes().then(() => {
+//     console.log('Indexes are synchronized');
+// }).catch(err => {
+//     console.error('Error synchronizing indexes', err);
+// });
 
 module.exports = Category;
