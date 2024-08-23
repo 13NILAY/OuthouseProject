@@ -51,7 +51,7 @@ app.use("/product",require("./routes/products"));
 app.use("/order",require("./routes/order") );
 
 // app.use(verifyRoles(ROLES_LIST.Admin));
-app.use("/category",require("./routes/category"));
+app.use("/Category",require("./routes/category"));
 app.use("/admin", require("./routes/admin"));
 
 app.listen(PORT,()=>{
