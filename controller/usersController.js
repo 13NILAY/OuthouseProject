@@ -48,6 +48,7 @@ const updateUser=async(req,res)=>{
 
 const addCart = async (req, res) => {
   try {
+    console.log("ghftghvhhgb");
     const { product, selectedSize, quantity } = req.body;
     const productId=product._id;
     console.log(req.body);
@@ -104,8 +105,8 @@ const removeFromCart = async (req, res) => {
     }
 
     // Fetch the user from the database (assuming req.user.id is available via authentication middleware)
-    const user = await User.findById(req.body.userId);
-    // console.log(user);
+    const user = await User.findOne({_id:req.body.userId});
+    console.log(user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

@@ -80,6 +80,7 @@ const addProduct = async (req, res) => {
 
 const addSlider =async(req,res)=>{
   try {
+    console.log(req.body);
     const sliders = req.body.sliders; // Assuming sliders is an array of slider objects
     console.log(sliders);
 
@@ -99,8 +100,13 @@ const addSlider =async(req,res)=>{
     });
 }
 }
+const deleteSlider= async(req,res)=>{
+  const {_id}=req.params;
+  const updatedSlider=await Slider.findByIdAndDelete(_id);
+  res.status(200).json("Slider Deleted");
+}
 const addSingleImagesForProduct =(req,res)=>{
-  console.log("Sonu");
+  console.log("Monu");
   upload.single('photo')(req, res, async (err) => {
     console.log(req.file);
     console.log(req.body);
@@ -131,6 +137,7 @@ const addSingleImagesForProduct =(req,res)=>{
   });
 }
 const addImagesForProduct = (req, res) => {
+  console.log("Monu");
   console.log(req.files);
     console.log(req.body);
   upload.array('photos', 10)(req, res, async (err) => {
@@ -173,6 +180,6 @@ const addImagesForProduct = (req, res) => {
 
 
 module.exports = {
-  addCategory,addProduct,addImagesForProduct,addSingleImagesForProduct,addSlider
+  addCategory,addProduct,addImagesForProduct,addSingleImagesForProduct,addSlider,deleteSlider
 };
  
