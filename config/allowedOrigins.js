@@ -1,4 +1,5 @@
 const allowedOrigins =[
+    "https://cloathing-website.vercel.app",
     "http://localhost:5173",
     "https://outhouse-project.vercel.app",
     "http://localhost:5174",
