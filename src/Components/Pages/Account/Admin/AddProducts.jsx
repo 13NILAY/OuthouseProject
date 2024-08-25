@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../../../api/axios";
 import { useNavigate } from 'react-router-dom';
+import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
 const AddProducts = () => {
   const navigate = useNavigate();
+  const axiosPrivate=useAxiosPrivate();
   const [images, setImages] = useState([]); // State to hold multiple images
   const [image,setImage] =useState(null);
   const [categories, setCategories] = useState([]);
@@ -23,7 +25,7 @@ const AddProducts = () => {
     // Fetch categories from the backend
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("/category");
+        const response = await axios.get("/Category/all");
         console.log(response.data);
         setCategories(response.data.data);
       } catch (error) {
@@ -59,48 +61,35 @@ const AddProducts = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Selected image:', image);
-  
-    const formData2 = new FormData();
-    formData2.append("photo", image);
-    
-    // Log the FormData content
-
     try {
+      // Prepare FormData for the front image
+      const formData2 = new FormData();
+      formData2.append("photo", image);
+  
       // Upload the front image
-      
-      console.log(formData2);
-      const uploadFront = await fetch("https://outhouseproject.onrender.com/admin/addSingleImage", {
-        method: "POST",
-        body: formData2,
+      const uploadFrontResponse = await axiosPrivate.post("/admin/addSingleImage", formData2, {
+        headers: { "Content-Type": "multipart/form-data" }
       });
-
-      const result1 = await uploadFront.json();
-      const frontImageUrl = result1.fileUrl;
-
-      // Upload the other images
+      const frontImageUrl = uploadFrontResponse.data.fileUrl;
+  
+      // Prepare FormData for the other images
       const formData1 = new FormData();
-      images.forEach((image) => {
-        formData1.append("photos", image);
+      images.forEach((img) => {
+        formData1.append("photos", img);
       });
-
-      const upload = await fetch("https://outhouseproject.onrender.com/admin/addProductImages", {
-        method: "POST",
-        body: formData1,
+  
+      // Upload the other images
+      const uploadImagesResponse = await axiosPrivate.post("/admin/addProductImages", formData1, {
+        headers: { "Content-Type": "multipart/form-data" }
       });
-
-      const result2 = await upload.json();
-      const imageUrls = result2.fileUrls;
-
-      // Prepare the final data to send
+      const imageUrls = uploadImagesResponse.data.fileUrls;
       const finalFormData = {
         ...formData,
         frontPicture: frontImageUrl,
         picture: imageUrls,
       };
-
-      // Submit the final product data
-      const add = await axios.post(
+      try{
+      const add = await axiosPrivate.post(
         "/admin/addProduct",
         JSON.stringify(finalFormData),
         {
@@ -112,8 +101,11 @@ const AddProducts = () => {
       if (add.status === 201) {
         navigate("/shop");
       }
+    }catch(e){
+      console.log("Error uploading product"+e);
+    }
     } catch (error) {
-      console.error("Error submitting product:", error);
+      console.error("Error uploading Image:", error);
     }
   };
 

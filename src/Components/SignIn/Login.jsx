@@ -3,10 +3,11 @@ import { useState,useEffect } from 'react'
 import { Link ,useNavigate ,useLocation } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import axios from '../../api/axios'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const Login = () => {
     const {setAuthInfo ,persist ,setPersist} =useAuth();
-
+    const axiosPrivate=useAxiosPrivate();
     const navigate =useNavigate();
     const location =useLocation();
     const from =location.state?.from?.pathname || "/";
@@ -23,7 +24,7 @@ const Login = () => {
     const handleSubmit=async (e)=>{
         e.preventDefault();
         try{
-            const response=await axios.post("/login",
+            const response=await axiosPrivate.post("/login",
                 JSON.stringify({identity:user,password:pwd}),
                 {
                     headers:{'Content-Type':'application/json'},

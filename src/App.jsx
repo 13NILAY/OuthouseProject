@@ -44,7 +44,7 @@ const App =()=>{
             
             We want to protect these routes
             <Route element={<PersistLogin/>}>
-                <Route element={<RequireAuth allowedRoles={[Roles]}/>}>
+                <Route element={<RequireAuth allowedRoles={[Roles.User,Roles.Admin]}/>}>
                     <Route path='shop' element={<Shop/>}/>
                     <Route path='account' element={<Account/>}/>
                     <Route path='account/my-orders' element={<Orders/>}/>

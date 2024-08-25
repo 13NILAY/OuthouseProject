@@ -7,7 +7,7 @@ const RequireAuth = ({allowedRoles}) => {
     const {auth}=useAuth();
     const location =useLocation();
     const rolesArray = auth?.roles ? Object.values(auth.roles) : []; // Object.values for 2001,5150   and Object.keys for Admin,User
-
+    // console.log(rolesArray);
   return (
         rolesArray?.find(role=>allowedRoles?.includes(role))
         ? <Outlet/>

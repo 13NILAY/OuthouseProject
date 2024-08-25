@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from '../../api/axios';
+// import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 const initialState={
     cart:[],
 }
@@ -33,16 +34,17 @@ export const cartSlice=createSlice({
 
 export const {addToCart,deleteFromCart,updateQuantity,fetchCart}=cartSlice.actions;
 
-export const addProductToCart = ({product, quantity,selectedSize}) => async (dispatch) => {
+export const addProductToCart = ({product, quantity,selectedSize},axiosPrivate) => async (dispatch) => {
   
     try {
+      console.log(product);
       const newProduct = {
         id: product._id,
         product,
         quantity,
         selectedSize
       };
-      const response=await axios.post(
+      const response=await axiosPrivate.post(
         `/users/addCart/${product._id}`,
         JSON.stringify({ 
             email:"nilay1030@gmail.com", product: newProduct.product,selectedSize,quantity }),
@@ -51,6 +53,7 @@ export const addProductToCart = ({product, quantity,selectedSize}) => async (dis
           withCredentials: true,
         }
       );
+      console.log(response);
       if(response.status==200){
         dispatch(addToCart(newProduct));
         // navigate('/shop');
@@ -62,27 +65,23 @@ export const addProductToCart = ({product, quantity,selectedSize}) => async (dis
     }
   };
 
-  export const deleteProductFromCart =({_id,size}) => async (dispatch) =>{
-    const data=new FormData();
+  export const deleteProductFromCart =({_id,size},axiosPrivate) => async (dispatch) =>{
+    // const data=new FormData();
     
     try{
       console.log(_id);
-      console.log(size);
-      const response = await fetch(`https://outhouseproject.onrender.com/users/removeCart/${_id}`, {
-        method: "DELETE",
+      const response = await axiosPrivate.delete(`/users/removeCart/${_id}`, {
+        data: {
+          productId: _id,
+          size,
+          userId: '669a5e947e33bff5c9ea4ee7',
+        },
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            productId: _id,
-            size: size,
-            userId: '669a5e947e33bff5c9ea4ee7'
-        }),
-    });
+      });
       const result=await response.json();
       console.log(result);
-      if(response.status==200){
         dispatch(deleteFromCart(_id));
         // navigate('/shop');
-      }
     }catch (error) {
       console.error('Error adding product to cart:', error);
     }

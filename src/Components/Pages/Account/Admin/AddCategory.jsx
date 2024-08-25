@@ -1,10 +1,11 @@
 import React, { useState,useEffect ,useRef } from "react";
 import axios from "../../../../api/axios";
 import { Link,useNavigate } from 'react-router-dom';
-
+import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
 const AddCategory = () => {
     const navigate=useNavigate();
+    const axiosPrivate=useAxiosPrivate();
     const [image, setImage]=useState(null);
     const [formData, setFormData] = useState({
         categoryName: "",
@@ -16,7 +17,7 @@ const AddCategory = () => {
     const handleSubmit=async(event)=>{
         event.preventDefault();
         try{
-            const add=await axios.post("/admin/addCategory",
+            const add=await axiosPrivate.post("/admin/addCategory",
               JSON.stringify({formData}),
               {
                   headers: { 'Content-Type': 'application/json' },

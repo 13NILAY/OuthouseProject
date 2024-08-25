@@ -6,12 +6,13 @@ import { deleteProductFromCart } from '../../../features/cart/cartSlice'
 import { deleteFromCart,fetchCart,updateQuantity } from '../../../features/cart/cartSlice'
 import { useSelector,useDispatch } from 'react-redux'
 import axios from '../../../api/axios'
-
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate =useNavigate();
   const location=useLocation();
+  const axiosPrivate=useAxiosPrivate();
   const [checkout,setCheckout] =useState(false);
   const cart = useSelector((state) => state.cart);
   const [isCartEmpty, setIsCartEmpty] = useState(true);
@@ -20,7 +21,12 @@ const Cart = () => {
   useEffect(()=>{
     const fetchCartItems=async()=>{
       try {
-        const result = await axios.get("/users/viewMyCart/nilay1030@gmail.com");
+        // const options={
+        //   url:,
+        //   method:'GET',
+        //   withCredentials:true
+        // }
+        const result = await axiosPrivate.get('/users/viewMyCart/nilay1030@gmail.com');
         console.log(result.data.cart);
         if (result.data.cart && result.data.cart.length > 0) {
           dispatch(fetchCart(result.data.cart));
@@ -46,25 +52,25 @@ const Cart = () => {
   const handleDelete = ({_id, size}) => {
     console.log(_id);
     console.log(size);
-    dispatch(deleteProductFromCart({ _id, size }));
+    dispatch(deleteProductFromCart({ _id, size },axiosPrivate));
   };
 
   const handleConfirmAddress=()=>{
     navigate('/account/address',{state: {from :location},replace: true});
   }
   const handleChechOut= async()=>{
-    // navigate("https://meet.google.com/eot-xixw-pqg");
     try {
-      const orderData = await axios.post("/order/create-order", {
-          amount: totalCost,
+      const orderUrl = "/order/create-order";
+      const orderData = await axiosPrivate.post(orderUrl, {
+          amount: amount,
           currency: "INR",
       });
-      console.log(orderData);
+
       const options = {
           key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your Razorpay key ID
           amount: orderData.data.amount,
           currency: orderData.data.currency,
-          name: "Nilay's Cloathes",
+          name: "Your Company Name",
           description: "Test Transaction",
           order_id: orderData.data.id,
           handler: (response) => {
@@ -160,8 +166,8 @@ const Cart = () => {
                         <p>₹ {totalCost}</p>
                       </div>
                       <button onClick={handleConfirmAddress} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography'>Confirm Your Address</button>
-                      <button onClick={handleChechOut} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >
-                        Proceed to Checkout
+                      <button className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >
+                        CheckOut
                       </button>
                     </div>
                 </div>

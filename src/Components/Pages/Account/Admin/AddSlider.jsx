@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../../../api/axios";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
 const AddSliders = () => {
   const [slider, setSlider] = useState({ name: "", description: "", image: "" });
+  const axiosPrivate = useAxiosPrivate();
   const [image, setImage] = useState(null);
   const [sliderSubmitted, setSliderSubmitted] = useState(false);
+  const [currentSliders, setCurrentSliders] = useState([]);
+
+  // Fetch current sliders on component mount
+  useEffect(() => {
+    const fetchSliders = async () => {
+      try {
+        const response = await axiosPrivate.get("/slider/all");
+        console.log(response.data.data);
+        setCurrentSliders(response.data.data);
+      } catch (error) {
+        console.log("Error fetching sliders:", error);
+      }
+    };
+
+    fetchSliders();
+  }, []);
 
   // Handle input change for name and description
   const handleInputChange = (e) => {
@@ -23,47 +41,68 @@ const AddSliders = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Hello");
-    console.log(image);
-    // if (!image) {
-    //   console.log("Please upload an image");
-    //   return;
-    // }
+    if (!image) {
+      console.log("Please upload an image");
+      return;
+    }
 
     const formData2 = new FormData();
     formData2.append("photo", image);
 
     try {
-      console.log(formData2);
-      const imageUploadResponse = await fetch("https://outhouseproject.onrender.com/admin/addSingleImage", {
-        method: "POST",
-        body: formData2,
-        credentials:"include"
+      // Upload image first
+      const uploadFrontResponse = await axiosPrivate.post("/admin/addSingleImage", formData2, {
+        headers: { "Content-Type": "multipart/form-data" }
       });
-      console.log(imageUploadResponse);
+      const frontImageUrl = uploadFrontResponse.data.fileUrl;
 
-      if (imageUploadResponse) {
-        const data = await imageUploadResponse.json();
-        console.log(data);
-        // Update the slider image URL
-        const newSlider = { ...slider, image: data.fileUrl };
+      if (uploadFrontResponse.status === 200) {
+        const newSlider = { ...slider, image: frontImageUrl };
 
         // Submit the slider data to the backend
-        const sliderResponse = await axios.post("/admin/addSlider", { sliders: [newSlider] }, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const sliderResponse = await axiosPrivate.post(
+          "/admin/addSlider",
+          { sliders: [newSlider] },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-        if (sliderResponse.status === 201) {
+        if (sliderResponse.status === 201 && sliderResponse.data.success) {
           console.log("Slider added successfully");
-          setSliderSubmitted(true); // Set flag to true to allow adding another slider
+          setSliderSubmitted(true);
+          // Update current sliders with the newly added sliders
+          setCurrentSliders([...currentSliders, newSlider]);
+          resetForm();
+        } else {
+          console.log("Error adding slider:", sliderResponse.data.message);
         }
       } else {
-        console.log("Error uploading image:", imageUploadResponse.statusText);
+        console.log("Error uploading image:", uploadFrontResponse);
       }
     } catch (error) {
       console.log("Error uploading image or adding slider:", error);
+    }
+  };
+
+  // Handle slider deletion
+  const handleDelete = async (sliderId) => {
+    try {
+      const response = await axiosPrivate.delete(`/admin/deleteSlider/${sliderId}`,{
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(response);
+      if (response.status === 200) {
+        console.log("Slider deleted successfully");
+        // Remove the deleted slider from the currentSliders state
+        setCurrentSliders(currentSliders.filter((s) => s._id !== sliderId));
+      } else {
+        console.log("Error deleting slider:", response.data.message);
+      }
+    } catch (error) {
+      console.log("Error deleting slider:", error);
     }
   };
 
@@ -76,6 +115,23 @@ const AddSliders = () => {
 
   return (
     <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding pt-10 font-texts">
+      <h1 className="text-4xl font-bold mb-6 text-center">Current Sliders</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {currentSliders.map((slider, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-lg p-4 relative">
+            <img src={slider.image} alt={slider.name} className="w-full h-40 object-cover rounded-t-lg" />
+            <h2 className="text-xl font-semibold mt-4">{slider.name}</h2>
+            <p className="text-gray-600 mt-2">{slider.description}</p>
+            <button
+              onClick={() => handleDelete(slider._id)}
+              className="absolute bottom-4 right-4 bg-red-600 text-white py-1 px-3 rounded-lg shadow hover:bg-red-700"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
+
       <h1 className="text-4xl font-bold mb-6 text-center">Add New Slider</h1>
       <div className="w-full max-w-2xl mx-auto bg-slate-50 p-8 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit}>
@@ -118,7 +174,10 @@ const AddSliders = () => {
           </div>
 
           <div className="text-center">
-            <button type="submit" className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">
+            <button
+              type="submit"
+              className="bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800"
+            >
               Submit
             </button>
           </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from "../api/axios";
+import axios, { axiosPrivate } from "../api/axios";
 import useAuth from "./useAuth";
 
 
@@ -9,7 +9,7 @@ const useLogout = () => {
     const logout =async() =>{
         setAuth({});
         try{
-            const response =await axios('/logout',{
+            const response =await axiosPrivate('/logout',{
                 withCredentials:true 
             });
             console.log(response);

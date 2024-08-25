@@ -3,12 +3,14 @@ import img1 from '../../../assets/trial1.jpg';
 import ScrollToTop from '../../../ScrollToTop.jsx';
 import { useParams } from 'react-router-dom';
 import axios from '../../../api/axios.jsx';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate.jsx';
 import { useDispatch } from 'react-redux';
 import { addProductToCart } from '../../../features/cart/cartSlice.jsx';
 
 const SingleProductDetail = () => {
   const dispatch=useDispatch();
   const { _id } = useParams();
+  const axiosPrivate=useAxiosPrivate();
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState();
   const [quantity, setQuantity] = useState(1);
@@ -40,7 +42,7 @@ const SingleProductDetail = () => {
   };
 
   const handleAdd =()=>{
-    dispatch(addProductToCart({product:product,quantity:quantity,selectedSize:selectedSize}));
+    dispatch(addProductToCart({product:product,quantity:quantity,selectedSize:selectedSize},axiosPrivate));
     
   };
 
@@ -58,7 +60,7 @@ const SingleProductDetail = () => {
             </div>
             <div className='grid grid-cols-3 gap-x-5 my-3'>
             {
-              product.picture.map((pic,index)=>(
+              product.picture?.map((pic,index)=>(
               <div className='w-full bg-gray-200' key={index}>
                 <img src={pic} alt="Additional view 1" />
               </div>
