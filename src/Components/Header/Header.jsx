@@ -4,6 +4,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import logo from "../../assets/logo.png"
 
 const Header = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -24,7 +25,7 @@ const Header = () => {
         <nav className="flex justify-between items-center w-full">
           {/* Logo Section */}
           <div className="text-2xl font-bold text-primary">
-            <Link to="/">HELLO WORLD</Link>
+            <Link to="/">Cloathes Fashion </Link>
           </div>
 
           {/* Navigation Links */}

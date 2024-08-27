@@ -23,8 +23,8 @@ const FooterLinks = () => {
         <div className="flex flex-col w-1/3 max-[520px]:w-full mb-8">
           <h2 className="font-headings text-base font-semibold text-typography mb-2">Help</h2>
           <ul className="font-texts text-sm font-semibold text-typography/70 space-y-2">
-            <li>Contact Us: contact@yourdomain.com</li>
-            <li>Customer Service: +123 456 7890</li>
+            <li>Contact Us: nilayrathod129@gmail.com </li>
+            <li>Customer Service: +91 9324263899</li>
             <li>Terms & Conditions</li>
           </ul>
         </div>

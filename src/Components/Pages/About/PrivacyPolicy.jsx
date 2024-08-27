@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
       <div className="max-w-4xl mx-auto">
         <h1 className="font-headings text-3xl font-bold text-gray-800 mb-6">Privacy Policy</h1>
         <p className="font-texts text-lg text-gray-700 mb-4">
-          Your privacy is important to us at [Your Company Name]. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or use our services.
+          Your privacy is important to us at Cloathes Fashion. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or use our services.
         </p>
         <h2 className="font-headings text-2xl font-semibold text-gray-800 mb-4">Information We Collect</h2>
         <p className="font-texts text-lg text-gray-700 mb-4">
@@ -25,7 +25,7 @@ const PrivacyPolicy = () => {
           By using our site, you consent to our website's privacy policy. We reserve the right to update or modify this policy at any time, and we encourage you to review this policy periodically.
         </p>
         <p className="font-texts text-lg text-gray-700 mb-4">
-          If you have any questions about this Privacy Policy, please contact us at [Your Email Address].
+          If you have any questions about this Privacy Policy, please contact us at nilayrathod129@gmail.com .
         </p>
       </div>
     </div>
