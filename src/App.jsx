@@ -6,6 +6,9 @@ import Layouts from './Components/Pages/Layouts.jsx'
 import Home from "./Components/Pages/Home/Home.jsx"
 import Shop from './Components/Pages/Shop/Shop.jsx'
 import About from './Components/Pages/About/About.jsx'
+import AboutUs from './Components/Pages/About/AboutUs.jsx'
+import RefundPolicy from './Components/Pages/About/RefundPolicy.jsx'
+import PrivacyPolicy from './Components/Pages/About/PrivacyPolicy.jsx'
 import SignInPage from './Components/SignIn/SignInPage.jsx'
 import Account from './Components/Pages/Account/Account.jsx'
 import Cart from './Components/Pages/Cart/Cart.jsx'
@@ -39,7 +42,10 @@ const App =()=>{
           <Route path='/' element ={<Layouts />} >
             {/* public routes */}
             <Route index element={<Home/>}/>
-            <Route path='about' element={<About/>}/>
+            <Route path='about' element={<AboutUs/>} />
+            <Route path='privacy-policy' element={<PrivacyPolicy/>} />
+            <Route path='refund-policy' element={<RefundPolicy/>} />
+            {/* <Route path='about' element={<About/>}/> */}
             
             
             We want to protect these routes
