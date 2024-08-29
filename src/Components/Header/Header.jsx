@@ -4,7 +4,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.jpg";
 
 const Header = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -20,17 +20,23 @@ const Header = () => {
 
   return (
     <>
-      <header className="h-20 w-full shadow-md z-50 fixed top-0 left-0 font-texts flex justify-between items-center px-sectionPadding max-md:px-mobileScreenPadding bg-background text-typography">
+      <header className="h-20 w-full shadow-md z-50 fixed top-0 left-0 font-texts flex justify-between items-center px-4 md:px-8 bg-background text-typography">
         {/* FOR LARGE SCREEN DEVICES */}
         <nav className="flex justify-between items-center w-full">
           {/* Logo Section */}
-          <div className="text-2xl font-bold text-primary">
-            <Link to="/">Cloathes Fashion </Link>
+          <div className="flex items-center h-full">
+            <Link to="/" className="flex items-center h-full">
+              <img 
+                src={logo} 
+                alt="Kura Fashion Logo" 
+                className="h-full max-h-16 w-auto object-contain" 
+              />
+            </Link>
           </div>
 
           {/* Navigation Links */}
-          <ul className="flex justify-between items-center font-semibold text-lg w-2/5 max-md:w-1/4 max-mobileL:w-2/5 space-x-6">
-            <li className="hidden md:block">
+          <ul className="hidden md:flex justify-between items-center font-semibold text-lg space-x-6">
+            <li>
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -44,7 +50,7 @@ const Header = () => {
                 Home
               </NavLink>
             </li>
-            <li className="hidden md:block">
+            <li>
               <NavLink
                 to="/shop"
                 className={({ isActive }) =>
@@ -58,7 +64,7 @@ const Header = () => {
                 Shop
               </NavLink>
             </li>
-            <li className="hidden md:block">
+            <li>
               <NavLink
                 to="/about"
                 className={({ isActive }) =>
@@ -96,15 +102,15 @@ const Header = () => {
                 <AccountCircleOutlinedIcon />
               </NavLink>
             </li>
-            <div
-              className="md:hidden cursor-pointer transition-transform duration-300 transform hover:scale-110"
-              onClick={() => {
-                setSidebar(true);
-              }}
-            >
-              <MenuIcon />
-            </div>
           </ul>
+
+          {/* Hamburger Icon for Small Screens */}
+          <div
+            className="md:hidden cursor-pointer transition-transform duration-300 transform hover:scale-110"
+            onClick={() => setSidebar(true)}
+          >
+            <MenuIcon />
+          </div>
         </nav>
 
         {/* FOR SMALL SCREEN DEVICES, THE SIDEBAR IS USED */}
@@ -125,6 +131,7 @@ const Header = () => {
                       isActive ? 'text-primary' : ''
                     } hover:text-primary`
                   }
+                  onClick={() => setSidebar(false)}
                 >
                   Home
                 </NavLink>
@@ -135,6 +142,7 @@ const Header = () => {
                       isActive ? 'text-primary' : ''
                     } hover:text-primary`
                   }
+                  onClick={() => setSidebar(false)}
                 >
                   Shop
                 </NavLink>
@@ -145,6 +153,7 @@ const Header = () => {
                       isActive ? 'text-primary' : ''
                     } hover:text-primary`
                   }
+                  onClick={() => setSidebar(false)}
                 >
                   About
                 </NavLink>
@@ -155,6 +164,7 @@ const Header = () => {
                       isActive ? 'text-primary' : ''
                     } hover:text-primary`
                   }
+                  onClick={() => setSidebar(false)}
                 >
                   Cart
                 </NavLink>
@@ -165,6 +175,7 @@ const Header = () => {
                       isActive ? 'text-primary' : ''
                     } hover:text-primary`
                   }
+                  onClick={() => setSidebar(false)}
                 >
                   Account
                 </NavLink>

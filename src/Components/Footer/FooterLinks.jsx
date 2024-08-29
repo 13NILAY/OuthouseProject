@@ -6,13 +6,13 @@ import XIcon from '@mui/icons-material/X';
 
 const FooterLinks = () => {
   return (
-    <footer className="border-t-[1px] border-typography px-sectionPadding max-sm:px-mobileScreenPadding py-16 bg-white text-typography">
-      <div className="flex flex-wrap justify-between max-[520px]:grid max-[520px]:grid-cols-2 max-[520px]:gap-y-8 items-start w-full">
+    <footer className="border-t-[1px] border-typography px-4 md:px-8 py-8 md:py-12 bg-white text-typography">
+      <div className="flex flex-wrap justify-between max-sm:flex-col items-start w-full">
         
         {/* Quick Links Section */}
-        <div className="flex flex-col w-1/3 max-[520px]:w-full mb-8">
-          <h2 className="font-headings text-base font-semibold text-typography mb-2">Quick Links</h2>
-          <ul className="font-texts text-sm font-semibold text-typography/70 space-y-2">
+        <div className="flex flex-col w-full sm:w-1/2 md:w-1/4 mb-6">
+          <h2 className="font-headings text-sm md:text-base font-semibold text-typography mb-2">Quick Links</h2>
+          <ul className="font-texts text-xs md:text-sm font-semibold text-typography/70 space-y-1 md:space-y-2">
             <li><Link to="/about" className="hover:text-typography">About Us</Link></li>
             <li><Link to="/privacy-policy" className="hover:text-typography">Privacy Policy</Link></li>
             <li><Link to="/refund-policy" className="hover:text-typography">Refund & Return</Link></li>
@@ -20,28 +20,40 @@ const FooterLinks = () => {
         </div>
 
         {/* Help Section */}
-        <div className="flex flex-col w-1/3 max-[520px]:w-full mb-8">
-          <h2 className="font-headings text-base font-semibold text-typography mb-2">Help</h2>
-          <ul className="font-texts text-sm font-semibold text-typography/70 space-y-2">
-            <li>Contact Us: nilayrathod129@gmail.com </li>
+        <div className="flex flex-col w-full sm:w-1/2 md:w-1/4 mb-6">
+          <h2 className="font-headings text-sm md:text-base font-semibold text-typography mb-2">Help</h2>
+          <ul className="font-texts text-xs md:text-sm font-semibold text-typography/70 space-y-1 md:space-y-2">
+            <li>Contact Us: nilayrathod129@gmail.com</li>
             <li>Customer Service: +91 9324263899</li>
-            <li>Terms & Conditions</li>
+            <li><Link to="/terms-conditions" className="hover:text-typography">Terms & Conditions</Link></li>
+            <li><Link to="/shippingPolicy" className="hover:text-typography">Shipping & Delivery Policy</Link></li>
           </ul>
         </div>
 
         {/* Socials Section */}
-        <div className="flex flex-col w-1/3 max-[520px]:w-full mb-8">
-          <h2 className="font-headings text-base font-semibold text-typography mb-2">Socials</h2>
-          <ul className="font-texts text-sm font-semibold text-typography/70 space-y-2">
+        <div className="flex flex-col w-full sm:w-1/2 md:w-1/4 mb-6">
+          <h2 className="font-headings text-sm md:text-base font-semibold text-typography mb-2">Socials</h2>
+          <ul className="font-texts text-xs md:text-sm font-semibold text-typography/70 space-y-1 md:space-y-2">
             <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-typography"><InstagramIcon fontSize="small" /> <span className="ml-2">Instagram</span></a></li>
             <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-typography"><FacebookIcon fontSize="small" /> <span className="ml-2">Facebook</span></a></li>
             <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-typography"><XIcon fontSize="small" /> <span className="ml-2">Twitter</span></a></li>
           </ul>
         </div>
 
+        {/* Address Section */}
+        <div className="flex flex-col w-full sm:w-1/2 md:w-1/4 mb-6">
+          <h2 className="font-headings text-sm md:text-base font-semibold text-typography mb-2">Our Address</h2>
+          <address className="font-texts text-xs md:text-sm font-semibold text-typography/70 not-italic space-y-1 md:space-y-2">
+            <p>Kura Fashion</p>
+            <p>Flat 401 - Harmony Bldg, Kharkar Alley</p>
+            <p>Thane West, Maharashtra, 400601</p>
+            <p>India</p>
+          </address>
+        </div>
+
       </div>
-      <div className="text-center text-sm text-typography/50 mt-8">
-        © {new Date().getFullYear()} Your Company Name. All rights reserved.
+      <div className="text-center text-xs md:text-sm text-typography/50 mt-4">
+        © {new Date().getFullYear()} Kura Fashion. All rights reserved.
       </div>
     </footer>
   );

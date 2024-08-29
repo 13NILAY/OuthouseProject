@@ -2,11 +2,11 @@ import React from 'react';
 
 const PrivacyPolicy = () => {
   return (
-    <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding py-16 bg-gray-100">
+    <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding py-16 bg-gray-100 text-typography">
       <div className="max-w-4xl mx-auto">
         <h1 className="font-headings text-3xl font-bold text-gray-800 mb-6">Privacy Policy</h1>
         <p className="font-texts text-lg text-gray-700 mb-4">
-          Your privacy is important to us at Cloathes Fashion. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or use our services.
+          Your privacy is important to us at Kura Fashion. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or use our services.
         </p>
         <h2 className="font-headings text-2xl font-semibold text-gray-800 mb-4">Information We Collect</h2>
         <p className="font-texts text-lg text-gray-700 mb-4">

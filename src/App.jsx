@@ -7,6 +7,8 @@ import Home from "./Components/Pages/Home/Home.jsx"
 import Shop from './Components/Pages/Shop/Shop.jsx'
 import About from './Components/Pages/About/About.jsx'
 import AboutUs from './Components/Pages/About/AboutUs.jsx'
+import TermsConditions from './Components/Pages/About/TermsConditions.jsx'
+import ShippingPolicy from './Components/Pages/About/ShippingPolicy.jsx'
 import RefundPolicy from './Components/Pages/About/RefundPolicy.jsx'
 import PrivacyPolicy from './Components/Pages/About/PrivacyPolicy.jsx'
 import SignInPage from './Components/SignIn/SignInPage.jsx'
@@ -45,6 +47,9 @@ const App =()=>{
             <Route path='about' element={<AboutUs/>} />
             <Route path='privacy-policy' element={<PrivacyPolicy/>} />
             <Route path='refund-policy' element={<RefundPolicy/>} />
+            <Route path='terms-conditions' element={<TermsConditions/>} />
+            <Route path='shippingPolicy' element={<ShippingPolicy/>} />
+            
             {/* <Route path='about' element={<About/>}/> */}
             
             

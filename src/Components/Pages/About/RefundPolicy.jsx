@@ -2,11 +2,11 @@ import React from 'react';
 
 const RefundPolicy = () => {
   return (
-    <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding py-16 bg-gray-100">
+    <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding py-16 bg-gray-100 text-typography">
       <div className="max-w-4xl mx-auto">
         <h1 className="font-headings text-3xl font-bold text-gray-800 mb-6">Returns & Refund Policy</h1>
         <p className="font-texts text-lg text-gray-700 mb-4">
-          At Cloathes Fashion, we strive to ensure that our customers are completely satisfied with their purchases. If for any reason you are not satisfied with a product you have purchased from us, we offer a straightforward return and refund process.
+          At Kura Fashion, we strive to ensure that our customers are completely satisfied with their purchases. If for any reason you are not satisfied with a product you have purchased from us, we offer a straightforward return and refund process.
         </p>
         <h2 className="font-headings text-2xl font-semibold text-gray-800 mb-4">Returns</h2>
         <p className="font-texts text-lg text-gray-700 mb-4">
