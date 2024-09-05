@@ -63,10 +63,10 @@ const Cart = () => {
     try {
       const orderUrl = "/order/create-order";
       const orderData = await axiosPrivate.post(orderUrl, {
-          amount: amount,
+          amount: totalCost,
           currency: "INR",
       });
-
+      console.log(orderData);
       const options = {
           key: 'rzp_live_BlDvyLU3aPQcwT', // Replace with your Razorpay key ID
           amount: orderData.data.amount,
