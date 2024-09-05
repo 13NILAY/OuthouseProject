@@ -8,6 +8,7 @@ import { useSelector,useDispatch } from 'react-redux'
 import axios from '../../../api/axios'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
+
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate =useNavigate();
@@ -67,10 +68,10 @@ const Cart = () => {
       });
 
       const options = {
-          key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your Razorpay key ID
+          key: 'rzp_live_BlDvyLU3aPQcwT', // Replace with your Razorpay key ID
           amount: orderData.data.amount,
           currency: orderData.data.currency,
-          name: "Your Company Name",
+          name: "Kura Fashion",
           description: "Test Transaction",
           order_id: orderData.data.id,
           handler: (response) => {
@@ -78,12 +79,12 @@ const Cart = () => {
               console.log(response);
           },
           prefill: {
-              name: "John Doe",
-              email: "john.doe@example.com",
-              contact: "9999999999",
+              name: "Nilay Rathod",
+              email: "nilayrathod1303@gmail.com",
+              contact: "9324263899",
           },
           notes: {
-              address: "Some Address",
+              address: "9/404 Sector 6 Shanti Garden Mira Road East Mumbai 401107",
           },
           theme: {
               color: "#F37254",
