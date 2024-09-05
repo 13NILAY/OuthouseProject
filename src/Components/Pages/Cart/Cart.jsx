@@ -167,7 +167,7 @@ const Cart = () => {
                         <p>₹ {totalCost}</p>
                       </div>
                       <button onClick={handleConfirmAddress} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography'>Confirm Your Address</button>
-                      <button className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >
+                      <button onClick={handleChechOut} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >
                         CheckOut
                       </button>
                     </div>
