@@ -62,6 +62,7 @@ const Cart = () => {
   const handleChechOut= async()=>{
     try {
       const orderUrl = "/order/create-order";
+      // console.log(orderUrl);
       const orderData = await axiosPrivate.post(orderUrl, {
           amount: totalCost,
           currency: "INR",
