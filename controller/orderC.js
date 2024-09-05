@@ -13,8 +13,8 @@ const createOrder= async(req,res)=>{
     try {
         const order = await axios.post('https://api.razorpay.com/v1/orders', options, {
             auth: {
-                username: razorpayKeyId,
-                password: razorpayKeySecret,
+                username: process.env.KeyId,
+                password: process.env.KeySecret,
             },
         });
 
