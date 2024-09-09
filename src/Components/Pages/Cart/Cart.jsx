@@ -55,7 +55,7 @@ const Cart = () => {
   }, [cart]);
   useEffect(()=>{
     let total=0;
-    total=totalProductCost+deliveryCost+discount;
+    total=totalProductCost+deliveryCost-discount;
     setTotalCost(total);
   },[totalProductCost])
     
@@ -160,7 +160,7 @@ const Cart = () => {
                         {cart.map((prod,index)=>(
                           <div key={index} className='flex justify-between items-center'>
                             <p>Product {index+1} :</p>
-                            <p className='text-black font-semibold'>₹ {prod.product.cost.value}</p>
+                            <p className='text-black font-semibold'>₹ { totalProductCost}</p>
                           </div>
                         ))}
                         <div className='flex justify-between items-center'>
