@@ -195,11 +195,8 @@ const Register = () => {
             </p>
         </div>
         <div className='mt-6 flex flex-col justify-center items-start'>
-            <button 
-                type='submit'  
-                className='bg-primary hover:shadow hover:shadow-black/40 text-white p-2 w-full text-lg font-semibold rounded-sm my-2 duration-200 ease-in-out' 
-            //  disabled={!validName || validPwd ||!validMatch ? true : false}
-            > REGISTER
+        <button type="submit" className=" bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">
+              REGISTER
             </button>
             <div className='flex justify-center items-center'>
             </div>

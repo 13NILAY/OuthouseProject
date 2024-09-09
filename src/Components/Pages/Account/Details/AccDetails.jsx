@@ -111,7 +111,8 @@ const AccDetails = () => {
         </div>
         
         <div className='my-5 font-semibold border border-typography rounded-sm w-1/4 max-md:w-2/5 max-sm:w-full text-lg text-center p-2 bg-primary text-background cursor-pointer'>
-          <button onClick={checkPassword}>SAVE CHANGES</button>
+          <button onClick={checkPassword} className=" bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">SAVE CHANGES</button>
+          
         </div>
         {/*------------------------------------ */}
       </div>

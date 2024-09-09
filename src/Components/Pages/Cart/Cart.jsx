@@ -17,6 +17,9 @@ const Cart = () => {
   const [checkout,setCheckout] =useState(false);
   const cart = useSelector((state) => state.cart);
   const [isCartEmpty, setIsCartEmpty] = useState(true);
+  const [totalProductCost,setTotalProductCost]= useState(0);
+  const deliveryCost=(1*totalProductCost)/100;
+  const discount=300;
   const [totalCost, setTotalCost] = useState(0);
  
   useEffect(()=>{
@@ -43,12 +46,18 @@ const Cart = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    let total = 0;
+    let totalProduct = 0;
     cart.forEach((prod) => {
-      total += prod.product.cost.value * prod.quantity;
+      totalProduct += prod.product.cost.value * prod.quantity;
     });
-    setTotalCost(total);
+
+    setTotalProductCost(totalProduct);
   }, [cart]);
+  useEffect(()=>{
+    let total=0;
+    total=totalProductCost+deliveryCost+discount;
+    setTotalCost(total);
+  },[totalProductCost])
     
   const handleDelete = ({_id, size}) => {
     console.log(_id);
@@ -156,21 +165,23 @@ const Cart = () => {
                         ))}
                         <div className='flex justify-between items-center'>
                           <p>Delivery Charge:</p>
-                          <p className='text-black font-semibold'>₹149</p>
+                          <p className='text-black font-semibold'>₹ {deliveryCost}</p>
                         </div>
                         <div className='flex justify-between items-center'>
                           <p>Discount:</p>
-                          <p className='text-red-600 font-semibold'>-₹300</p>
+                          <p className='text-red-600 font-semibold'>-₹ {discount}</p>
                         </div> 
                       </div>
                       <div className='flex justify-between items-center font-bold text-lg font-texts'>
                         <p>Total:</p>
                         <p>₹ {totalCost}</p>
                       </div>
-                      <button onClick={handleConfirmAddress} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography'>Confirm Your Address</button>
-                      <button onClick={handleChechOut} className='text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography' >
+                      <button onClick={handleConfirmAddress} className="text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography shadow hover:bg-green-800">Confirm Your Address</button>
+                      <button onClick={handleChechOut} className="text-lg font-texts font-semibold w-full p-2 bg-primary text-background mt-4 rounded-sm border border-typography shadow hover:bg-green-800" >
                         CheckOut
                       </button>
+                     
+                      
                     </div>
                 </div>
               </>

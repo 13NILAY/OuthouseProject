@@ -37,7 +37,7 @@ const FeaturedProds = () => {
 
             <div className='w-full flex justify-center items-center'>
               <Link to="/shop">
-                <button className='text-background bg-primary border-typography border px-10 py-2 text-xl font-headings font-semibold rounded-sm'>
+                <button className='  p-2 bg-primary text-background mt-4 border border-typography shadow hover:bg-green-800  w-full  px-10 py-2 text-xl font-headings font-semibold rounded-sm'>
                   View All Products
                 </button>
               </Link>

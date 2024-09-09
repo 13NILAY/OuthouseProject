@@ -96,7 +96,9 @@ const Login = () => {
             <p className='text-typography text-[12px] hover:text-black hover:underline font-semibold mt-1 duration-200 ease-in-out '>Forgot Passowrd?</p>
         </div>
         <div className='mt-6 flex flex-col justify-center items-start'>
-            <button type='submit' className='bg-primary hover:shadow hover:shadow-black/40 text-white p-2 w-2/5 text-lg font-semibold rounded-sm my-2 duration-200 ease-in-out'>LOG IN</button>
+        <button type="submit" className=" bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">
+              LOG IN
+            </button>
             <div className='flex justify-center items-center '>
                 <input 
                     type='checkbox'
