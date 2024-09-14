@@ -38,7 +38,9 @@ const productSchema = new Schema(
      
     color: [
         {
-          type: String,
+          colorCode:{
+            type:String 
+          }
         },
       ],
     

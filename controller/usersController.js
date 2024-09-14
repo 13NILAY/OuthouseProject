@@ -95,7 +95,6 @@ const addCart = async (req, res) => {
 //remove From Cart
 const removeFromCart = async (req, res) => {
   try {
-    console.log("nilay");
   console.log(req.body);
     const { productId, size ,userId } = req.body;
 
@@ -123,7 +122,7 @@ const removeFromCart = async (req, res) => {
 
     // Save the updated user document
     const savedUser =await user.save();
-    console.log(savedUser);
+    // console.log(savedUser);
 
     res.status(200).json({ message: 'Product removed from cart successfully', cart: user.cart });
   } catch (error) {
@@ -136,11 +135,9 @@ const removeFromCart = async (req, res) => {
 const getUserCart = async (req, res) => {
   try {
     const { email } = req.params;
-    console.log(email);
 
     // Fetch the user by email and populate the cart with product details
     const user = await User.findOne({ email }).populate('cart.product').exec();
-    console.log(user);
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });

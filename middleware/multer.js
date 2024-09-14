@@ -3,7 +3,7 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 require('dotenv').config();
 
-const supportedFormats = ['jpeg', 'png', 'jpg', 'gif'];
+const supportedFormats = ['jpeg', 'png', 'jpg', 'gif','webp'];
 
 cloudinary.config({
   cloud_name: process.env.cloud_name,
