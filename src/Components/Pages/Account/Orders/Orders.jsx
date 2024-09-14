@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import OrderedProds from './OrderedProds'
 import { Link } from 'react-router-dom'
+import UserOrders from './UserOrders'
 
 const Orders = () => {
     const [hasOrdered, setHasOrdered]= useState(true)
@@ -12,6 +13,7 @@ const Orders = () => {
                 <div className='flex flex-col justify-center items-center'>
                     <p className='text-4xl font-semibold font-headings text-typography mb-6'>MY ORDERS</p>
                     <OrderedProds/>
+                    <UserOrders/>
                 </div>
             )
         }

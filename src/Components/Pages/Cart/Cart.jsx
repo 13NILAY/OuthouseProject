@@ -7,9 +7,10 @@ import { deleteFromCart,fetchCart,updateQuantity } from '../../../features/cart/
 import { useSelector,useDispatch } from 'react-redux'
 import axios from '../../../api/axios'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
-
+import useAuth from '../../../hooks/useAuth'
 
 const Cart = () => {
+  const {auth} =useAuth();
   const dispatch = useDispatch();
   const navigate =useNavigate();
   const location=useLocation();
@@ -21,7 +22,22 @@ const Cart = () => {
   const deliveryCost=(1*totalProductCost)/100;
   const discount=300;
   const [totalCost, setTotalCost] = useState(0);
+  const [user,setUser]=useState(null);
+  const email=auth.email;
  
+  useEffect(()=>{
+    const fetchUser=async()=>{
+      console.log(auth);
+      try{
+        const result=await axiosPrivate.get(`/users/${email}`);
+        console.log(result);
+        setUser(result.data);
+      }catch(err){
+        console.log(err);
+      }
+    };
+    fetchUser();
+  },[auth]);
   useEffect(()=>{
     const fetchCartItems=async()=>{
       try {
@@ -30,7 +46,7 @@ const Cart = () => {
         //   method:'GET',
         //   withCredentials:true
         // }
-        const result = await axiosPrivate.get('/users/viewMyCart/nilay1030@gmail.com');
+        const result = await axiosPrivate.get(`/users/viewMyCart/${email}`);
         console.log(result.data.cart);
         if (result.data.cart && result.data.cart.length > 0) {
           dispatch(fetchCart(result.data.cart));
@@ -56,7 +72,7 @@ const Cart = () => {
   useEffect(()=>{
     let total=0;
     total=totalProductCost+deliveryCost-discount;
-    setTotalCost(total);
+    setTotalCost(1);
   },[totalProductCost])
     
   const handleDelete = ({_id, size}) => {
@@ -75,6 +91,8 @@ const Cart = () => {
       const orderData = await axiosPrivate.post(orderUrl, {
           amount: totalCost,
           currency: "INR",
+          // cart:cart,
+          // user:user,
       });
       console.log(orderData);
       const options = {
@@ -89,13 +107,13 @@ const Cart = () => {
               console.log(response);
           },
           prefill: {
-              name: "Nilay Rathod",
-              email: "nilayrathod1303@gmail.com",
-              contact: "9324263899",
+              name: `${user.first_name}`,
+              email: `${user.email}`,
+              contact: `${user.mobileno}`,
           },
-          notes: {
-              address: "9/404 Sector 6 Shanti Garden Mira Road East Mumbai 401107",
-          },
+          // notes: {
+          //     address: ,
+          // },
           theme: {
               color: "#F37254",
           },

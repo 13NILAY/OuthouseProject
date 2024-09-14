@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <>
       <div className='w-full mt-20'>
-        <NewsLetter/>
+        {/* <NewsLetter/> */}
         <FooterLinks/>
       </div>
       

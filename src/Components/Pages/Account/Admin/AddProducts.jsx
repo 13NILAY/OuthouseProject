@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "../../../../api/axios";
 import { useNavigate } from 'react-router-dom';
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
+import { ChromePicker } from 'react-color';
 
 const AddProducts = () => {
   const navigate = useNavigate();
-  const axiosPrivate=useAxiosPrivate();
-  const [images, setImages] = useState([]); // State to hold multiple images
-  const [image,setImage] =useState(null);
+  const axiosPrivate = useAxiosPrivate();
+  const [images, setImages] = useState([]);
+  const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [colors, setColors] = useState([{ colorCode: '#000000' }]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -16,17 +18,15 @@ const AddProducts = () => {
     sizes: [""],
     currency: "INR",
     value: "",
-    frontPicture:"",
+    frontPicture: "",
     picture: "",
-    colors: [""],
+    colors: colors,
   });
 
   useEffect(() => {
-    // Fetch categories from the backend
     const fetchCategories = async () => {
       try {
         const response = await axios.get("/Category/all");
-        console.log(response.data);
         setCategories(response.data.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -39,12 +39,11 @@ const AddProducts = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleSingleFileChange=(e)=>{
-    // const selectedFile = e.target.files[0];
-    
-      setImage(e.target.files[0]);
-    
-  }
+
+  const handleSingleFileChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   const handleFileChange = (e) => {
     setImages([...e.target.files]);
   };
@@ -59,26 +58,30 @@ const AddProducts = () => {
     setFormData({ ...formData, [field]: [...formData[field], ""] });
   };
 
+  const handleColorChange = (color, index) => {
+    const newColors = [...colors];
+    newColors[index].colorCode = color.hex;
+    setColors(newColors);
+  };
+
+  const addColorField = () => {
+    setColors([...colors, { colorCode: '#000000' }]);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Prepare FormData for the front image
       const formData2 = new FormData();
       formData2.append("photo", image);
-  
-      // Upload the front image
       const uploadFrontResponse = await axiosPrivate.post("/admin/addSingleImage", formData2, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       const frontImageUrl = uploadFrontResponse.data.fileUrl;
-  
-      // Prepare FormData for the other images
+
       const formData1 = new FormData();
       images.forEach((img) => {
         formData1.append("photos", img);
       });
-  
-      // Upload the other images
       const uploadImagesResponse = await axiosPrivate.post("/admin/addProductImages", formData1, {
         headers: { "Content-Type": "multipart/form-data" }
       });
@@ -87,8 +90,9 @@ const AddProducts = () => {
         ...formData,
         frontPicture: frontImageUrl,
         picture: imageUrls,
+        colors: colors.map((color) => color.colorCode),
       };
-      try{
+
       const add = await axiosPrivate.post(
         "/admin/addProduct",
         JSON.stringify(finalFormData),
@@ -101,71 +105,63 @@ const AddProducts = () => {
       if (add.status === 201) {
         navigate("/shop");
       }
-    }catch(e){
-      console.log("Error uploading product"+e);
-    }
     } catch (error) {
       console.error("Error uploading Image:", error);
     }
   };
 
   return (
-    <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding pt-10 font-texts ">
+    <div className="mt-20 px-sectionPadding max-md:px-mobileScreenPadding pt-10 font-texts">
       <h1 className="text-4xl font-bold mb-6 text-center">
         Add a New Product
       </h1>
-      <div className="w-full max-w-2xl mx-auto bg-slate-50 p-8 rounded-lg shadow-lg">
+      <div className="w-full max-w-2xl mx-auto bg-[#f9f4f1] p-8 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit}>
-          {/* Product Image */}
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="FrontPicture">
-              Product Image(Front):
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="FrontPicture">
+              Product Image (Front):
             </label>
             <input
               id="FrontPicture"
-              className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg cursor-pointer bg-[#f9f4f1] focus:outline-none"
               type="file"
               accept="image/*"
-              // multiple
               onChange={handleSingleFileChange}
             />
           </div>
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="picture">
-              Product Images(Other):
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="picture">
+              Product Images (Other):
             </label>
             <input
               id="picture"
-              className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg cursor-pointer bg-[#f9f4f1] focus:outline-none"
               type="file"
               accept="image/*"
               multiple
               onChange={handleFileChange}
             />
           </div>
-
-          {/* Product Title */}
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="name">
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="name">
               Product Title:
             </label>
             <input
-              className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
+              className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Enter product title"
             />
           </div>
-
-          {/* Product Category Dropdown */}
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="category">
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="category">
               Product Category:
             </label>
             <select
-              className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
+              className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
               id="category"
               name="categoryName"
               value={formData.categoryName}
@@ -179,106 +175,79 @@ const AddProducts = () => {
               ))}
             </select>
           </div>
-
-          {/* Product Sizes */}
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="sizes">
-              Product Sizes:
-            </label>
-            {formData.sizes.map((size, index) => (
-              <div key={index} className="flex items-center w-full mb-2">
-                <input
-                  className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
-                  type="text"
-                  value={size}
-                  onChange={(e) => handleArrayChange(e, index, "sizes")}
-                />
-                {index === formData.sizes.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={() => addArrayField("sizes")}
-                    className="ml-2 bg-green-700 text-white px-2 py-1 rounded"
-                  >
-                    +
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Product Price */}
-          <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="price">
-              Product Price:
-            </label>
-            <div className="flex">
-              <select
-                className="block w-1/4 text-sm text-black border border-gray-300 rounded-l-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
-                name="currency"
-                value={formData.currency}
-                onChange={handleChange}
-              >
-                <option value="USD">USD</option>
-                <option value="INR">INR</option>
-                <option value="EUR">EUR</option>
-                <option value="AUD">AUD</option>
-              </select>
-              <input
-                className="block w-3/4 text-sm text-black border border-gray-300 rounded-r-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
-                type="number"
-                name="value"
-                id="price"
-                value={formData.value}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          {/* Product Description */}
-          <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="description">
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="description">
               Product Description:
             </label>
             <textarea
-              rows="6"
+              className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
               id="description"
-              className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
               name="description"
               value={formData.description}
               onChange={handleChange}
+              placeholder="Enter product description"
             />
           </div>
-
-          {/* Product Colors */}
           <div className="mb-6">
-            <label className="block text-lg font-semibold mb-2" htmlFor="colors">
-              Product Colors:
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="sizes">
+              Sizes:
             </label>
-            {formData.colors.map((color, index) => (
-              <div key={index} className="flex items-center w-full mb-2">
-                <input
-                  className="block w-full text-sm text-black border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
-                  type="text"
-                  value={color}
-                  id="colors"
-                  onChange={(e) => handleArrayChange(e, index, "colors")}
+            {formData.sizes.map((size, index) => (
+              <input
+                key={index}
+                className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg p-2 mb-2 focus:outline-none focus:ring focus:border-blue-300"
+                type="text"
+                placeholder={`Size ${index + 1}`}
+                value={size}
+                onChange={(e) => handleArrayChange(e, index, 'sizes')}
+              />
+            ))}
+            <button
+              type="button"
+              onClick={() => addArrayField('sizes')}
+              className="bg-[#5c4033] text-[#fff7ec] font-bold py-2 px-4 rounded-lg shadow hover:bg-[#6a4c39]"
+            >
+              Add Size
+            </button>
+          </div>
+          <div className="mb-6">
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="colors">
+              Colors:
+            </label>
+            {colors.map((color, index) => (
+              <div key={index} className="mb-4 flex items-center">
+                <ChromePicker
+                  color={color.colorCode}
+                  onChangeComplete={(color) => handleColorChange(color, index)}
                 />
-                {index === formData.colors.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={() => addArrayField("colors")}
-                    className="ml-2 bg-green-700 text-white px-2 py-1 rounded"
-                  >
-                    +
-                  </button>
-                )}
+                <div className="ml-4 w-6 h-6" style={{ backgroundColor: color.colorCode }} />
               </div>
             ))}
+            <button
+              type="button"
+              onClick={addColorField}
+              className="bg-[#5c4033] text-[#fff7ec] font-bold py-2 px-4 rounded-lg shadow hover:bg-[#6a4c39]"
+            >
+              Add Color
+            </button>
           </div>
-
+          <div className="mb-6">
+            <label className="block text-lg font-semibold mb-2 text-[#5c4033]" htmlFor="value">
+              Price (INR):
+            </label>
+            <input
+              className="block w-full text-sm text-[#40322e] border border-[#5c4033] rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
+              type="number"
+              id="value"
+              name="value"
+              value={formData.value}
+              onChange={handleChange}
+              placeholder="Enter product price"
+            />
+          </div>
           <div className="text-center">
-          <button type="submit" className=" bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-green-800">
-              SUBMIT
+            <button type="submit" className="bg-[#5c4033] text-[#fff7ec] font-bold py-2 px-4 rounded-lg shadow hover:bg-[#6a4c39]">
+              Submit
             </button>
           </div>
         </form>
