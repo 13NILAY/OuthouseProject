@@ -5,7 +5,6 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from "../../assets/logo.jpg";
-import theme from '../../theme';
 
 const Header = () => {
   const [sidebar, setSidebar] = useState(false);

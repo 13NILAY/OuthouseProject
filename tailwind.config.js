@@ -4,10 +4,10 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  //xl:1280px
-  //lg:1024px 
-  //md:768px
-  //sm:640px
+  // xl:1280px
+  // lg:1024px 
+  // md:768px
+  // sm:640px
   theme: {
     extend: {
       screens:{

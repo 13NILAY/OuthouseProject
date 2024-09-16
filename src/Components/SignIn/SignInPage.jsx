@@ -11,7 +11,7 @@ const SignInPage = () => {
       <div className='flex flex-col justify-center items-center h-screen w-full bg-[#F4E1D2]'>
         <div className='text-[#8A5D3B] w-2/5 font-headings flex flex-wrap items-center justify-around mb-8'>
           <button
-            className={`text-lg md:text-[2.7rem] ${login ? 'text-[#4A2C2A]' : 'text-gray-400'} duration-200 ease-in-out border-none outline-none`}
+            className={`text-[2.7rem] ${login ? 'text-[#4A2C2A]' : 'text-gray-400'} duration-200 ease-in-out border-none outline-none`}
             onClick={() => { setLogin(true); }}>
             Login
           </button>
@@ -19,7 +19,7 @@ const SignInPage = () => {
             OR
           </div>
           <button
-            className={`text-lg md:text-[2.7rem] ${login ? 'text-[#4A2C2A]' : 'text-gray-400'} duration-200 ease-in-out border-none outline-none`}
+            className={`text-[2.7rem] ${!login ? 'text-[#4A2C2A]' : 'text-gray-400'} duration-200 ease-in-out border-none outline-none`}
             onClick={() => { setLogin(false); }}>
             Register
           </button>

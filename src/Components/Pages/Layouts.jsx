@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 
 const Layouts = () => {
   return (
-    <main className='bg-[#F4E1D2] w-full flex flex-col min-h-screen'>
+    <main className='bg-[#F4E1D2] w-full flex flex-col '>
       {/* Header Component */}
       <Header />
 
