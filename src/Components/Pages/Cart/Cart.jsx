@@ -11,16 +11,24 @@ import useAuth from '../../../hooks/useAuth'
 
 const Cart = () => {
   const {auth} =useAuth();
+  const [order,setOrder] =useState(null);
   const dispatch = useDispatch();
   const navigate =useNavigate();
   const location=useLocation();
+  const [paymentStatus,setPaymentStatus] =useState(false);
   const axiosPrivate=useAxiosPrivate();
   const [checkout,setCheckout] =useState(false);
+  const [cartDetails,setCartDetails]=useState(null);
   const cart = useSelector((state) => state.cart);
   const [isCartEmpty, setIsCartEmpty] = useState(true);
   const [totalProductCost,setTotalProductCost]= useState(0);
   const deliveryCost=(1*totalProductCost)/100;
   const discount=300;
+  const [paymentDetails,setPaymentDetails]=useState({
+    razorpay_order_id:"",
+    razorpay_payment_id:"",
+    razorpay_signature:""
+  });
   const [totalCost, setTotalCost] = useState(0);
   const [user,setUser]=useState(null);
   const email=auth.email;
@@ -37,7 +45,7 @@ const Cart = () => {
       }
     };
     fetchUser();
-  },[auth]);
+  },[]);
   useEffect(()=>{
     const fetchCartItems=async()=>{
       try {
@@ -46,8 +54,10 @@ const Cart = () => {
         //   method:'GET',
         //   withCredentials:true
         // }
+        console.log(user);
         const result = await axiosPrivate.get(`/users/viewMyCart/${email}`);
         console.log(result.data.cart);
+        setCartDetails(result.data.cart);
         if (result.data.cart && result.data.cart.length > 0) {
           dispatch(fetchCart(result.data.cart));
           setIsCartEmpty(false);
@@ -84,9 +94,35 @@ const Cart = () => {
   const handleConfirmAddress=()=>{
     navigate('/account/address',{state: {from :location},replace: true});
   }
+  const createOrder=async()=>{
+    try{
+      const orderData={
+        user:user,
+        items:cart,
+        totalCost:totalCost,
+        order:order,
+        paymentStatus,
+        deliveryCost,
+        discount,
+        cartDetails,
+        paymentDetails
+      };
+      const create = await axiosPrivate.post(
+        "/order/create-order",
+        JSON.stringify(orderData),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      );
+      console.log(create);
+    }catch(err){
+      console.log(err)
+    }
+  }
   const handleChechOut= async()=>{
     try {
-      const orderUrl = "/order/create-order";
+      const orderUrl = "/order/create-payment-gateway";
       // console.log(orderUrl);
       const orderData = await axiosPrivate.post(orderUrl, {
           amount: totalCost,
@@ -94,6 +130,7 @@ const Cart = () => {
           // cart:cart,
           // user:user,
       });
+      setOrder(orderData.data);
       console.log(orderData);
       const options = {
           key: 'rzp_live_BlDvyLU3aPQcwT', // Replace with your Razorpay key ID
@@ -104,16 +141,23 @@ const Cart = () => {
           order_id: orderData.data.id,
           handler: (response) => {
               alert("Payment successful!");
+              setPaymentStatus(true);
+              setPaymentDetails({
+                razorpay_order_id:response.razorpay_order_id,
+                razorpay_payment_id:response.razorpay_payment_id,
+                razorpay_signature:response.razorpay_signature
+              });
               console.log(response);
+              createOrder();
           },
           prefill: {
               name: `${user.first_name}`,
-              email: `${user.email}`,
+              email: email,
               contact: `${user.mobileno}`,
           },
-          // notes: {
-          //     address: ,
-          // },
+          notes: {
+              address:" Shanti Garden",
+          },
           theme: {
               color: "#F37254",
           },
