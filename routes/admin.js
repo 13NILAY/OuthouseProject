@@ -15,4 +15,6 @@ router.post("/addSingleImage",adminC.addSingleImagesForProduct);
 router.post("/addSlider",adminC.addSlider);
 //Delete Slider
 router.delete("/deleteSlider/:_id",adminC.deleteSlider);
+//UpdateOrder
+router.patch("/updateOrderStatus/:_id",adminC.updateOrder)
 module.exports =router;

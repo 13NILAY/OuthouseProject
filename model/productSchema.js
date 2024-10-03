@@ -37,12 +37,13 @@ const productSchema = new Schema(
     ],
      
     color: [
-        {
-          colorCode:{
-            type:String 
-          }
-        },
-      ],
+      {
+        colorCode: {
+          type: String
+        }
+      }
+    ],
+    
     
   },
   { timestamps: true }

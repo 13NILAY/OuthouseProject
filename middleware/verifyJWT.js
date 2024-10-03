@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user'); // Ensure the correct path to your User model
 
 const verifyJWT = async (req, res, next) => {
+    console.log(req.headers);
     const authHeader = req.headers.authorization || req.headers.Authorization;
     console.log(authHeader);
     if (!authHeader?.startsWith('Bearer ')) {

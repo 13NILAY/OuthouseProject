@@ -21,12 +21,26 @@ const orderSchema = new mongoose.Schema({
             price: {
                 type: Number,
                 required: true
+            },
+            color: {
+                type: String,
+                required: true
+            },
+            size: {
+                type: String,
+                required: true
             }
         }
     ],
     totalAmount: {
         type: Number,
         required: true
+    },
+    discount:{
+        type:Number,
+    },
+    deliveryCost:{
+        type:Number
     },
     currency: {
         type: String,
@@ -38,12 +52,17 @@ const orderSchema = new mongoose.Schema({
         enum: ['Pending', 'Paid', 'Failed'],
         default: 'Pending'
     },
-    // razorpayOrderId: {
-    //     type: String,
-    //     required: true
-    // },
-    razorpayPaymentId: {
-        type: String
+    razorpay_order_id: {
+        type: String,
+        required: true
+    },
+    razorpay_payment_id: {
+        type: String,
+        required: true
+    },
+    razorpay_signature: {
+        type: String,
+        required: true
     },
     orderStatus: {
         type: String,
@@ -59,5 +78,10 @@ const orderSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-
-module.exports = mongoose.model('Order', orderSchema);
+const Order=mongoose.model('Order', orderSchema);
+Order.syncIndexes().then(() => {
+    console.log('Indexes are synchronized');
+  }).catch(err => {
+    console.error('Error synchronizing indexes', err);
+  });
+module.exports = Order

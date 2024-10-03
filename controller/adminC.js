@@ -37,26 +37,26 @@ const addCategory =async(req,res) =>{
 
 const addProduct = async (req, res) => {
   try {
-    console.log(req.body);
     // Ensure all required fields are provided and correctly named
     const productData = {
       name: req.body.name,
       description: req.body.description,
       categoryName: req.body.categoryName, // Corrected typo here
-      size: req.body.sizes,
+      size: req.body.sizes,  // Expecting an array of sizes
       cost: {
         currency: req.body.currency,
         value: req.body.value,
       },
-      frontPicture:req.body.frontPicture,
-      picture: req.body.picture,
-      color: req.body.colors,
+      frontPicture: req.body.frontPicture,
+      picture: req.body.picture,  // Expecting an array of pictures
+      // Map colors to the required format
+      color: req.body.colors.map(colorCode => ({ colorCode })),
     };
-    console.log(productData);
-    // Log the incoming product data for debugging purposes
-    // console.log('Received product data:', productData);
 
-    // Create a new product instance with the validated data
+    // Log the incoming product data for debugging purposes
+    console.log(productData);
+
+    // Create a new product instance
     const product = new ProductSchema(productData);
 
     // Save the product to the database
@@ -178,8 +178,21 @@ const addImagesForProduct = (req, res) => {
   });
 };
 
+const updateOrder=async(req,res)=>{
+  try {
+      const {_id}=req.params;
+      console.log(req.body);
+      // const user=await User.findByIdAndUpdate(req.user._id,req.body,{ new: true })
+      const newOrder=await OrderSchema.findOneAndUpdate({_id:_id},{orderStatus:req.body.status});
+      console.log(newOrder);
+      res.status(200).json(newOrder);
+  } catch (error) {
+      console.log(error)
+      res.status(500).json("Upadation not done")
+  }
+}
 
 module.exports = {
-  addCategory,addProduct,addImagesForProduct,addSingleImagesForProduct,addSlider,deleteSlider
+  addCategory,addProduct,addImagesForProduct,addSingleImagesForProduct,addSlider,deleteSlider,updateOrder
 };
  

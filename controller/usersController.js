@@ -49,12 +49,12 @@ const updateUser=async(req,res)=>{
 const addCart = async (req, res) => {
   try {
     console.log("ghftghvhhgb");
-    const { product, selectedSize, quantity } = req.body;
+    const { product, selectedSize, quantity,selectedColor } = req.body;
     const productId=product._id;
     console.log(req.body);
     // Validate input
-    if (!productId || !selectedSize || !quantity) {
-      return res.status(400).json({ message: 'Product ID, size, and quantity are required' });
+    if (!productId || !selectedSize || !quantity || !selectedColor) {
+      return res.status(400).json({ message: 'Product ID, size,color and quantity are required' });
     }
 
     // Fetch the user from the database (assuming req.user.id is available via authentication middleware)
@@ -77,7 +77,7 @@ const addCart = async (req, res) => {
       user.cart[cartItemIndex].quantity = quantity;
     } else {
       // Otherwise, add the new product to the cart
-      user.cart.push({ product: productId, selectedSize, quantity });
+      user.cart.push({ product: productId, selectedSize,selectedColor, quantity });
     }
 
     // Save the updated user document
@@ -96,7 +96,7 @@ const addCart = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
   console.log(req.body);
-    const { productId, size ,userId } = req.body;
+    const { productId, size ,email } = req.body;
 
     // Validate input
     if (!productId || !size) {
@@ -104,7 +104,7 @@ const removeFromCart = async (req, res) => {
     }
 
     // Fetch the user from the database (assuming req.user.id is available via authentication middleware)
-    const user = await User.findOne({_id:req.body.userId});
+    const user = await User.findOne({email:email});
     console.log(user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -123,14 +123,30 @@ const removeFromCart = async (req, res) => {
     // Save the updated user document
     const savedUser =await user.save();
     // console.log(savedUser);
-
+    
     res.status(200).json({ message: 'Product removed from cart successfully', cart: user.cart });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
   }
 };
+const getOrdersList =async(req,res) =>{
+  try{
+    const { email } = req.params;
 
+    // Fetch the user by email and populate the cart with product details
+    const user = await User.findOne({ email }).populate('order').exec();
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({ success: true, user });
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message:error});
+  }
+}
 //view my cart
 const getUserCart = async (req, res) => {
   try {
@@ -151,5 +167,5 @@ const getUserCart = async (req, res) => {
 };
 
 module.exports={
-    getAllUser,delUser,updateUser,getUser,getUserCart,removeFromCart,addCart
+    getAllUser,delUser,updateUser,getUser,getUserCart,removeFromCart,addCart,getOrdersList
 }

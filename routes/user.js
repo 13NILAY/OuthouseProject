@@ -22,4 +22,7 @@ router.post("/addCart/:pID",usersController.addCart);
 
 //delete from cart
 router.delete("/removeCart/:_id",usersController.removeFromCart);
+
+//orders
+router.get("/getOrdersList/:email",usersController.getOrdersList);
 module.exports =router ;          

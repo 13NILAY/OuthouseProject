@@ -46,16 +46,17 @@ app.use("/logout" ,require("./routes/logout"));
 app.use("/Category",require("./routes/category"));
 app.use("/product",require("./routes/products"));
 app.use("/slider",require("./routes/slider"));
+app.use("/coupon",require("./routes/coupon"));
+app.use("/order",require("./routes/order") );
 
 app.use(verifyJWT);
 app.use('/users',require('./routes/user'));
 
-
-app.use("/order",require("./routes/order") );
-
 app.use(verifyRoles(ROLES_LIST.Admin));
 
 app.use("/admin", require("./routes/admin"));
+
+
 
 app.listen(PORT,()=>{
     console.log("Server is running on Port",PORT);

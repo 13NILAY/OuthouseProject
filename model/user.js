@@ -88,6 +88,10 @@ const userSchema=new Schema({
           type: String,
           required: true,
         },
+        selectedColor:{
+          type:String,
+          required:true 
+        },
         quantity: {
           type: Number,
           required: true,
@@ -99,7 +103,7 @@ const userSchema=new Schema({
     order: [
         {
           type: Schema.Types.ObjectId,
-          ref: "order",
+          ref: "Order",
         },
     ],
 
