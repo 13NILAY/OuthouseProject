@@ -11,7 +11,7 @@ const Layouts = () => {
 
       {/* Content Outlet */}
       
-        <Outlet />
+        <Outlet className='p-20'/>
       
       {/* Footer Component */}
       <Footer />

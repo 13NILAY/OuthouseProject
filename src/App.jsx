@@ -21,9 +21,12 @@ import AddProducts from './Components/Pages/Account/Admin/AddProducts.jsx'
 import Address from './Components/Pages/Account/Address/Address.jsx'
 import AddCategory from './Components/Pages/Account/Admin/AddCategory.jsx'
 import AddSliders from './Components/Pages/Account/Admin/AddSlider.jsx'
+import AddCoupon from './Components/Pages/Account/Admin/AddCoupon.jsx'
 import UserOrders from './Components/Pages/Account/Orders/UserOrders.jsx'
+import TrackOrder from './Components/Pages/Account/Admin/TrackOrder.jsx'
 import Footer from './Components/Footer/Footer.jsx'
 import Header from './Components/Header/Header.jsx'
+
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 
@@ -70,6 +73,8 @@ const App =()=>{
                     <Route path='account/admin/addSlider' element={<AddSliders/>}/>
                     <Route path='account/admin/addCategory' element={<AddCategory/>}/>
                     <Route path='account/admin/addProducts' element={<AddProducts/>}/>
+                    <Route path='account/admin/trackOrders' element={<TrackOrder/>}/>
+                    <Route path='account/admin/addCoupon' element={<AddCoupon/>}/>
                 </Route>
             </Route>
 

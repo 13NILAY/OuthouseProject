@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../../../../api/axios';
+import  { axiosPrivate } from '../../../../api/axios';
+import useAuth from '../../../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Address = () => {
   const navigate = useNavigate();
+  const {auth}=useAuth();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
@@ -23,7 +25,7 @@ const Address = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const result = await axios.get("/users/nilay1030@gmail.com");
+        const result = await axiosPrivate.get(`/users/${auth.email}`);
         console.log(result.data);
         setFormData(result.data);
       } catch (err) {
@@ -41,7 +43,7 @@ const Address = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put("/users/nilay1030@gmail.com",
+      const response = await axiosPrivate.put(`/users/${auth.email}`,
         JSON.stringify({ formData }),
         {
           headers: { 'Content-Type': 'application/json' },

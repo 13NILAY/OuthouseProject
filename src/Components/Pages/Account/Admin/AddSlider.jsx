@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "../../../../api/axios";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
 const AddSliders = () => {

@@ -11,8 +11,7 @@ const Orders = () => {
             hasOrdered &&
             (
                 <div className='flex flex-col justify-center items-center'>
-                    <p className='text-4xl font-semibold font-headings text-typography mb-6'>MY ORDERS</p>
-                    <OrderedProds/>
+                    {/* <p className='text-4xl font-semibold font-headings text-typography mb-6'>MY ORDERS</p> */}
                     <UserOrders/>
                 </div>
             )

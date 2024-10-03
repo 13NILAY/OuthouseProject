@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "../../../../api/axios";
 import { useNavigate } from 'react-router-dom';
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import { ChromePicker } from 'react-color';
@@ -26,7 +25,7 @@ const AddProducts = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("/Category/all");
+        const response = await axiosPrivate.get("/Category/all");
         setCategories(response.data.data);
       } catch (error) {
         console.error("Error fetching categories:", error);

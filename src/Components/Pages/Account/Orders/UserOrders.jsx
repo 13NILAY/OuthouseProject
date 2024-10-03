@@ -1,45 +1,95 @@
 import React, { useEffect, useState } from 'react';
-import useAxiosPrivate from '../../../../hooks/useAxiosPrivate'
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import useAuth from '../../../../hooks/useAuth';
+import { FaBoxOpen, FaRupeeSign, FaTruck, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 const UserOrders = () => {
+  const { auth } = useAuth();
+  const email = auth.email;
   const axiosPrivate = useAxiosPrivate();
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axiosPrivate.get('/user/orders'); // Example endpoint to get user-specific orders
-        setOrders(response.data.orders);
+        const response = await axiosPrivate.get(`/users/getOrdersList/${email}`);
+        console.log(response);
+        setOrders(response.data.user.order);
       } catch (err) {
-        console.error("Error fetching orders:", err);
+        console.error('Error fetching orders:', err);
       }
     };
 
     fetchOrders();
   }, []);
 
-//   if (!orders.length) return <p>No orders found.</p>;
-
   return (
-    <div className='w-full mt-10'>
-      <h2 className='text-3xl font-semibold mb-6'>My Orders</h2>
-      <div className='flex flex-col gap-4'>
+    <div className='w-full mt-10 p-6 bg-gray-100'>
+      <h2 className='text-4xl font-bold mb-8 text-center text-gray-800'>My Orders</h2>
+      <div className='flex flex-col gap-6'>
         {orders.map(order => (
-          <div key={order._id} className='border p-4 rounded-md shadow-md'>
-            <h3 className='text-xl font-semibold'>Order ID: {order._id}</h3>
-            <p className='text-lg'>Status: {order.orderStatus}</p>
-            <p className='text-lg'>Total Amount: ₹{order.totalAmount}</p>
-            <p className='text-lg'>Payment Status: {order.paymentStatus}</p>
-            <p className='text-lg'>Ordered At: {new Date(order.createdAt).toLocaleDateString()}</p>
-            <div className='mt-3'>
-              <h4 className='text-lg font-semibold'>Items:</h4>
+          <div
+            key={order._id}
+            className='border border-gray-300 p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 ease-in-out'
+          >
+            <div className='flex justify-between items-center mb-4'>
+              <h3 className='text-2xl font-semibold text-gray-700 flex items-center'>
+                <FaBoxOpen className='mr-2 text-gray-500' />
+                Order ID: {order._id}
+              </h3>
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  order.orderStatus === 'Delivered'
+                    ? 'bg-green-100 text-green-600'
+                    : order.orderStatus === 'Shipped'
+                    ? 'bg-blue-100 text-blue-600'
+                    : 'bg-yellow-100 text-yellow-600'
+                }`}
+              >
+                {order.orderStatus}
+              </span>
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
+              <div>
+                <p className='text-lg text-gray-600 flex items-center'>
+                  <FaRupeeSign className='mr-2 text-gray-500' />
+                  <span>Total Amount: ₹{order.totalAmount}</span>
+                </p>
+                <p className='text-lg text-gray-600 flex items-center mt-2'>
+                  {order.paymentStatus === 'Paid' ? (
+                    <FaCheckCircle className='mr-2 text-green-500' />
+                  ) : (
+                    <FaTimesCircle className='mr-2 text-red-500' />
+                  )}
+                  <span>Payment Status: {order.paymentStatus}</span>
+                </p>
+              </div>
+
+              <div>
+                <p className='text-lg text-gray-600 flex items-center'>
+                  <FaTruck className='mr-2 text-gray-500' />
+                  <span>Ordered At: {new Date(order.createdAt).toLocaleDateString()}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className='mt-4'>
+              <h4 className='text-lg font-semibold text-gray-700 mb-2'>Items:</h4>
               <ul className='list-disc list-inside'>
                 {order.items.map(item => (
-                  <li key={item.productId}>
-                    Product ID: {item.productId}, Quantity: {item.quantity}, Price: ₹{item.price}
+                  <li key={item.productId} className='text-gray-600'>
+                    <span className='font-medium'>Product ID:</span> {item.productId},{' '}
+                    <span className='font-medium'>Quantity:</span> {item.quantity},{' '}
+                    <span className='font-medium'>Price:</span> ₹{item.price}
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className='mt-6 flex justify-between'>
+              <button className='text-sm font-medium text-blue-600 hover:underline'>Track Order</button>
+              <button className='text-sm font-medium text-blue-600 hover:underline'>View Details</button>
             </div>
           </div>
         ))}

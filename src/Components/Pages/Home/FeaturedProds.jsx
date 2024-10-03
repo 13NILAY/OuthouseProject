@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../../../api/axios';
+import { axiosPrivate } from '../../../api/axios';
 import SingleProduct from './SingleProduct';
 import { Link } from 'react-router-dom';
 
@@ -11,9 +11,9 @@ const FeaturedProds = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allProducts = await axios.get("/product/allProducts");
+        const allProducts = await axiosPrivate.get("/product/allProducts");
         console.log(allProducts?.data.data);
-        setProducts(allProducts.data.data);
+        setProducts(allProducts?.data.data);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -51,7 +51,7 @@ const FeaturedProds = () => {
         {/* Grid for Featured Products */}
         <div className='grid sm:grid-cols-3 gap-x-6 my-10 max-sm:grid-cols-2 max-mobileL:grid-cols-1'>
           {products.map((prod) => (
-            <SingleProduct key={prod._id} products={prod} />
+            <SingleProduct key={prod._id} product={prod} />
           ))}
         </div>
 
