@@ -3,7 +3,8 @@ const Coupon = require('../model/coupanSchema');
 // const User=require('../model/user');
 
 const applyCoupon = async (req, res) => {
-  console.log(req.body);
+
+  
   const { code, totalOrderValue } = req.body;
 
   try {
@@ -91,16 +92,16 @@ const addCoupon = async (req, res) => {
   }
 };
 
-module.exports = { addCoupon };
-
 
 // Get all coupons
 const getCoupons = async (req, res) => {
+  console.log("Sonu");
   try {
     const coupons = await Coupon.find();
-    console.log(coupans);
+    console.log(coupons);
     res.status(200).json(coupons);
   } catch (err) {
+  console.log(err);
     res.status(500).json({ message: 'Error fetching coupons', error: err });
   }
 };
