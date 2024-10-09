@@ -15,6 +15,7 @@ const AddCategory = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log(formData);
       const response = await axiosPrivate.post("/admin/addCategory",
         JSON.stringify(formData),
         {
@@ -22,7 +23,9 @@ const AddCategory = () => {
           withCredentials: true
         }
       );
+      console.log(response);
       if (response.status === 201) {
+
         navigate("/account/admin");
       }
     } catch (err) {

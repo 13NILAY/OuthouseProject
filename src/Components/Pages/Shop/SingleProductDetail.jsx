@@ -5,6 +5,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate.jsx';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../../hooks/useAuth.jsx';
 import { addProductToCart } from '../../../features/cart/cartSlice.jsx';
+// import { CheckCircleIcon } from '@heroicons/react/solid'; // Icon for success
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const SingleProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,7 +53,16 @@ const SingleProductDetail = () => {
       alert("Please select a size and color before adding to cart.");
       return;
     }
+
     dispatch(addProductToCart({ product, quantity, selectedSize, selectedColor }, axiosPrivate, email));
+
+    // Set success message
+    setSuccessMessage("Product added to cart successfully!");
+
+    // Hide success message after 3 seconds
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
   };
 
   if (error) {
@@ -65,12 +76,20 @@ const SingleProductDetail = () => {
   return (
     <>
       <ScrollToTop />
-      
+
+      {/* Success message */}
+      {successMessage && (
+        <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-4 px-6 rounded-lg shadow-xl flex items-center space-x-3 animate-fadeIn">
+          {/* <CheckCircleIcon className="w-8 h-8 text-white" /> */}
+          <span className="text-lg font-semibold">{successMessage}</span>
+        </div>
+      )}
+
       {/* Outer Container */}
       <div className="w-full flex justify-center mt-32 mb-8 px-2 sm:px-4">
 
         {/* Wrapper Box */}
-        <div className="w-full max-w-4xl p-6 bg-white border border-gray-200 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl transform hover:scale-105">
+        <div className="w-full max-w-4xl p-6 bg-white border border-gray-200 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl">
 
           {/* MAIN IMAGE SECTION */}
           <div className="w-full flex flex-col items-center mb-8">
@@ -78,7 +97,7 @@ const SingleProductDetail = () => {
               <img
                 src={product.frontPicture || '/default-image.jpg'}
                 alt={product.name || 'Product Image'}
-                className="w-full h-auto object-cover rounded-lg transition-transform duration-500 ease-in-out hover:scale-110"
+                className="w-full h-auto object-cover rounded-lg transition-transform duration-500 ease-in-out hover:opacity-90"
               />
             </div>
           </div>
@@ -91,7 +110,7 @@ const SingleProductDetail = () => {
                   <img
                     src={pic || '/default-image.jpg'}
                     alt={`Additional view ${index + 1}`}
-                    className="w-full h-auto object-cover rounded-md transition-transform duration-500 ease-in-out hover:scale-105"
+                    className="w-full h-auto object-cover rounded-md transition-opacity duration-500 ease-in-out hover:opacity-80"
                   />
                 </div>
               ))}
@@ -162,7 +181,7 @@ const SingleProductDetail = () => {
             {/* Add to Cart Button */}
             <div className="w-full mt-6">
               <button
-                className="w-full py-3 text-lg font-semibold bg-[#8A5D3B] text-white rounded-lg shadow-md hover:bg-[#6B4F3A] transition-all duration-300 ease-in-out transform hover:scale-105"
+                className="w-full py-3 text-lg font-semibold bg-[#8A5D3B] text-white rounded-lg shadow-md hover:bg-[#6B4F3A] transition-all duration-300 ease-in-out"
                 onClick={handleAdd}
               >
                 Add to Cart

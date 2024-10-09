@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from '../../../../api/axios';
 import  { axiosPrivate } from '../../../../api/axios';
 import useAuth from '../../../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 const Address = () => {
   const navigate = useNavigate();
   const {auth}=useAuth();
+  console.log(auth);
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
@@ -26,7 +28,7 @@ const Address = () => {
     const fetchUser = async () => {
       try {
         const result = await axiosPrivate.get(`/users/${auth.email}`);
-        console.log(result.data);
+        console.log(result);
         setFormData(result.data);
       } catch (err) {
         console.log(err);

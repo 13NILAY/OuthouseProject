@@ -30,7 +30,7 @@ const HomeSlider = () => {
     slidesToScroll: 1,
     autoplay: true,
     speed: 850,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 3000,
     cssEase: "linear"
   };
 

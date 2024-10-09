@@ -13,7 +13,6 @@ const UserOrders = () => {
     const fetchOrders = async () => {
       try {
         const response = await axiosPrivate.get(`/users/getOrdersList/${email}`);
-        console.log(response);
         setOrders(response.data.user.order);
       } catch (err) {
         console.error('Error fetching orders:', err);
@@ -21,7 +20,7 @@ const UserOrders = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [axiosPrivate, email]);
 
   return (
     <div className='w-full mt-10 p-6 bg-gray-100'>
@@ -78,18 +77,36 @@ const UserOrders = () => {
               <h4 className='text-lg font-semibold text-gray-700 mb-2'>Items:</h4>
               <ul className='list-disc list-inside'>
                 {order.items.map(item => (
-                  <li key={item.productId} className='text-gray-600'>
-                    <span className='font-medium'>Product ID:</span> {item.productId},{' '}
-                    <span className='font-medium'>Quantity:</span> {item.quantity},{' '}
-                    <span className='font-medium'>Price:</span> ₹{item.price}
+                  <li key={item.productId} className='text-gray-600 mb-4'>
+                    <p>
+                      <span className='font-medium'>Product ID:</span> {item.productId}
+                    </p>
+                    <p>
+                      <span className='font-medium'>Quantity:</span> {item.quantity}
+                    </p>
+                    <p>
+                      <span className='font-medium'>Price:</span> ₹{item.price}
+                    </p>
+
+                    {/* Display Size and Color */}
+                    {item.size && (
+                      <p>
+                        <span className='font-medium'>Size:</span> {item.size}
+                      </p>
+                    )}
+                    {item.color && (
+                      <p>
+                        <span className='font-medium'>Color:</span>
+                        <span
+                          className='inline-block ml-2 w-5 h-5 rounded-full'
+                          style={{ backgroundColor: item.color }}
+                        ></span>{' '}
+                        {/* ({item.color}) */}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className='mt-6 flex justify-between'>
-              <button className='text-sm font-medium text-blue-600 hover:underline'>Track Order</button>
-              <button className='text-sm font-medium text-blue-600 hover:underline'>View Details</button>
             </div>
           </div>
         ))}

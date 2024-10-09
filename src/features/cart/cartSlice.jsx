@@ -61,6 +61,7 @@ export const addProductToCart = ({product, quantity,selectedSize,selectedColor},
       console.log(response);
       if(response.status==200){
         dispatch(addToCart(newProduct));
+        // alert("Product Added to cart Successfully");
         // navigate('/shop');
       }
       // Dispatch the action with the new product details
@@ -83,9 +84,10 @@ export const addProductToCart = ({product, quantity,selectedSize,selectedColor},
         },
         headers: { 'Content-Type': 'application/json' },
       });
-      const result=await response.json();
-      console.log(result);
+      // const result=await response.json();
+      console.log(response);
         dispatch(deleteFromCart(_id));
+
         // navigate('/shop');
     }catch (error) {
       console.error('Error adding product to cart:', error);
