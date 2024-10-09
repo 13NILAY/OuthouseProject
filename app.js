@@ -44,14 +44,14 @@ app.use("/login",require('./routes/auth'));
 app.use("/refresh" ,require('./routes/refresh'));
 app.use("/logout" ,require("./routes/logout"));
 
-app.use(verifyJWT);
+
 app.use("/Category",require("./routes/category"));
 app.use("/product",require("./routes/products"));
 app.use("/slider",require("./routes/slider"));
 app.use("/coupon",require("./routes/coupon"));
 app.use("/order",require("./routes/order") );
 
-
+app.use(verifyJWT);
 app.use('/users',require('./routes/user'));
 
 app.use(verifyRoles(ROLES_LIST.Admin));
