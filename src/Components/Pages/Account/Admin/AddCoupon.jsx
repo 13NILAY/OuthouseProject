@@ -33,7 +33,7 @@ const AddCoupon = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/coupon', 
+      const response = await axiosPrivate.post('/coupon', 
         JSON.stringify(newCoupon),
         {
           headers: { 'Content-Type': 'application/json' },
