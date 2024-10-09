@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { axiosPrivate } from '../../../api/axios';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import SingleProduct from '../Home/SingleProduct';
 import { Search } from '@mui/icons-material'; 
 
 const Shop = () => {
+  const axiosPrivate=useAxiosPrivate();
   const [products, setProducts] = useState([]);
   const [filters, setFilters] = useState({ price: '' });
   const [searchQuery, setSearchQuery] = useState('');

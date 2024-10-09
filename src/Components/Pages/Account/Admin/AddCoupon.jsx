@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import  { axiosPrivate } from '../../../../api/axios'; // Ensure the correct path to your axios setup
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 
 const AddCoupon = () => {
+  const axiosPrivate =useAxiosPrivate();
   const [coupons, setCoupons] = useState([]);
   const [newCoupon, setNewCoupon] = useState({
     code: '',

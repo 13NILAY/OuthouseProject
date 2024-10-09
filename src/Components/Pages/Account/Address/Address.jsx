@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../../../../api/axios';
-import  { axiosPrivate } from '../../../../api/axios';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import useAuth from '../../../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Address = () => {
   const navigate = useNavigate();
   const {auth}=useAuth();
+  const axiosPrivate=useAxiosPrivate();
   console.log(auth);
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";

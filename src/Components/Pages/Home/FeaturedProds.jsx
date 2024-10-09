@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { axiosPrivate } from '../../../api/axios';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import SingleProduct from './SingleProduct';
 import { Link } from 'react-router-dom';
 
 const FeaturedProds = () => {
+  const axiosPrivate=useAxiosPrivate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
