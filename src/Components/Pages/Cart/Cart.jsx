@@ -83,10 +83,55 @@ const Cart = () => {
     navigate('/account/address', { state: { from: location }, replace: true });
   };
 
-  const handleCheckOut = async () => {
-    // Payment Gateway Integration (Razorpay) logic
-  };
+  const handleChechOut= async()=>{
+    try {
+      const orderUrl = "/order/create-payment-gateway";
+      // console.log(orderUrl);
+      const orderData = await axiosPrivate.post(orderUrl, {
+          amount: totalCost,
+          currency: "INR",
+          // cart:cart,
+          // user:user,
+      });
+      setOrder(orderData.data);
+      console.log(orderData);
+      const options = {
+          key: 'rzp_live_BlDvyLU3aPQcwT', // Replace with your Razorpay key ID
+          amount: orderData.data.amount,
+          currency: orderData.data.currency,
+          name: "Kura Fashion",
+          description: "Test Transaction",
+          order_id: orderData.data.id,
+          handler: (response) => {
+              alert("Payment successful!");
+              setPaymentStatus(true);
+              setPaymentDetails({
+                razorpay_order_id:response.razorpay_order_id,
+                razorpay_payment_id:response.razorpay_payment_id,
+                razorpay_signature:response.razorpay_signature
+              });
+              console.log(response);
+              createOrder();
+          },
+          prefill: {
+              name: `${user.first_name}`,
+              email: email,
+              contact: `${user.mobileno}`,
+          },
+          notes: {
+              address:" Shanti Garden",
+          },
+          theme: {
+              color: "#F37254",
+          },
+      };
 
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+  } catch (error) {
+      console.error("Payment error", error);
+  }
+  }
   const applyCoupon = async () => {
     try {
       const response = await axiosPrivate.post('/coupon/apply', {
@@ -192,7 +237,7 @@ const Cart = () => {
                   Confirm Your Address
                 </button>
                 <button
-                  onClick={handleCheckOut}
+                  onClick={handleChechOut}
                   className="text-lg font-texts font-semibold w-full p-2 bg-[#5c4033] text-[#fff7ec] mt-4 rounded-sm border border-[#5c4033] shadow hover:bg-[#40322e]"
                 >
                   Proceed to Pay
