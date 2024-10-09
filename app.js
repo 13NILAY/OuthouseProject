@@ -49,8 +49,8 @@ app.use("/slider",require("./routes/slider"));
 app.use("/coupon",require("./routes/coupon"));
 app.use("/order",require("./routes/order") );
 
-app.use(verifyJWT);
-app.use('/users',require('./routes/user'));
+// app.use(verifyJWT);
+app.use('/users',require('./routes/user'),verifyJWT);
 
 app.use(verifyRoles(ROLES_LIST.Admin));
 

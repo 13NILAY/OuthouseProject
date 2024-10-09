@@ -13,8 +13,9 @@ const fs= require("fs");
 //add Category
 const addCategory =async(req,res) =>{
   try{
+    console.log(req.body);
     const categoryData ={
-      categoryName: req.body.formData.categoryName
+      categoryName: req.body.categoryName
     }
     console.log(categoryData);
     const category =new CategorySchema(categoryData);

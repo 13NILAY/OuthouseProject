@@ -135,7 +135,30 @@ const getOrdersList =async(req,res) =>{
     const { email } = req.params;
 
     // Fetch the user by email and populate the cart with product details
-    const user = await User.findOne({ email }).populate('order').exec();
+   const getOrdersList =async(req,res) =>{
+  try{
+    const { email } = req.params;
+
+    // Fetch the user by email and populate the cart with product details
+    const user = await User.findOne({ email })
+      .populate({
+        path: 'order', // Populate the order array
+        populate: {
+          path: 'items.productId', // Populate the productId within each item
+          model: 'product'        // This should match the name of your Product model
+        }
+      });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({ success: true, user });
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message:error});
+  }
+}
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
